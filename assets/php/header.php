@@ -3,6 +3,8 @@
 		<h1 class="header-name"><?php 
 			if (preg_match("/vis/", $_SERVER['PHP_SELF']) === 1)
 				echo "Audio Visualisation";
+			elseif (preg_match("/reports/", $_SERVER['PHP_SELF']) === 1)
+				echo "Reports";
 			else
 				echo "Dave Woods";
 		 ?></h1>
