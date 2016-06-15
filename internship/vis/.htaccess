@@ -1,0 +1,13 @@
+<Files .htaccess>
+	Order Allow,Deny
+	Deny from all
+</Files>
+
+<Files test.php>
+	Order Allow,Deny
+	Deny from all
+</Files>
+
+<Files index.php>
+	ForceType application/x-httpd-php5
+</Files>

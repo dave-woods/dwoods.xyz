@@ -177,13 +177,17 @@ header {
         border-radius: 10px 10px 10px 10px; }
   .intern-report-wrap .report-navigator {
     background-color: #ddd;
-    padding: 10px 200px;
+    padding: 10px 20px;
     display: flex;
     flex-wrap: nowrap;
     align-items: center;
     justify-content: space-around; }
   .intern-report-wrap .report-list {
     list-style: none; }
+    .intern-report-wrap .report-list li ul {
+      list-style: none;
+      margin: 10px auto;
+      line-height: 1.3; }
 
 .intern-vis-wrap {
   display: flex;
