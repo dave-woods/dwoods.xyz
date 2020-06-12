@@ -10,9 +10,12 @@
             <v-col cols="auto"><h3><router-link :to="`/development`">Development</router-link></h3></v-col>
             <v-col style="text-align: left">
             <p>I've been writing code in a vast array of languages for close to a decade, from academic tools in Java and Python to modern web dev in JavaScript.</p>
-            <p>See the other languages I'm comfortable with, and some projects I've been involved with. <v-btn to="/development" tile icon><v-icon>mdi-hand-pointing-right</v-icon></v-btn></p>
+            <p>See the other languages I'm comfortable with, and some projects I've been involved with. <v-btn to="/development" tile text><v-icon large>mdi-hand-pointing-right</v-icon></v-btn></p>
             </v-col>
+            <!-- TODO: Add small image of something related to coding -->
         </v-row>
+        <!-- TODO: fill in rows for other link -->
+        <!-- possibly use different colours for each -->
     </v-container>
 </template>
 
