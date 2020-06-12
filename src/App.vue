@@ -1,13 +1,27 @@
 <template>
   <v-app id="app">
-    <router-view></router-view>
+    <!-- <v-navigation-drawer app>
+      Stuff
+    </v-navigation-drawer> -->
+    <app-header></app-header>
+    <v-main>
+      <v-container fluid>
+        <router-view></router-view>
+      </v-container>
+    </v-main>
+    <app-footer></app-footer>
   </v-app>
 </template>
 
 <script>
-
+import Header from '@/components/Header'
+import Footer from '@/components/Footer'
 export default {
-  name: 'App'
+  name: 'App',
+  components: {
+    'app-header': Header,
+    'app-footer': Footer
+  }
 }
 </script>
 
@@ -18,6 +32,5 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
 </style>
