@@ -1,6 +1,11 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+import Home from '@/views/Home.vue'
+import Development from '@/views/Development.vue'
+import Music from '@/views/Music.vue'
+import Research from '@/views/Research.vue'
+import Trampolining from '@/views/Trampolining.vue'
+import Visual from '@/views/Visual.vue'
 
 Vue.use(VueRouter)
 
@@ -9,6 +14,31 @@ const routes = [
     path: '/',
     name: 'home',
     component: Home
+  },
+  {
+    path: '/development',
+    name: 'development',
+    component: Development
+  },
+  {
+    path: '/music',
+    name: 'music',
+    component: Music
+  },
+  {
+    path: '/research',
+    name: 'research',
+    component: Research
+  },
+  {
+    path: '/trampolining',
+    name: 'trampolining',
+    component: Trampolining
+  },
+  {
+    path: '/visual',
+    name: 'visual',
+    component: Visual
   },
   {
     path: '*',
