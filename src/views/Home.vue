@@ -39,7 +39,7 @@
             <!-- TODO: Add small image of something related to trampolining -->
         </v-row>
         <v-row class="interest-row">
-            <v-col cols="2"><h3><router-link :to="`/visual`">Artist</router-link></h3></v-col>
+            <v-col cols="2"><h3><router-link :to="`/visual`">Visual Artist</router-link></h3></v-col>
             <v-col style="text-align: left">
             <p><a href="https://www.instagram.com/ferguswoods_">My brother</a>'s always been the real artist of the family, but I occasionally enjoy dabbling with sketching (mostly cartoon-style) and photo-manipulation.</p>
             <p>Browse some of the pieces I've made. <v-btn to="/visual" tile text><v-icon large>mdi-hand-pointing-right</v-icon></v-btn></p>

@@ -1,6 +1,9 @@
 <template>
     <div>
-        <h1>I'm a researcher.</h1>
+        <!-- TODO: Add a highlight to the noun below -->
+        <h1>I'm a <span class="who-am-i">researcher</span>.</h1>
+        <!-- Add large, related image -->
+        <!-- Add full descriptive text and examples of related works/links -->
     </div>
 </template>
 
