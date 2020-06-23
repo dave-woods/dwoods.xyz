@@ -32,11 +32,12 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  background-color: #E7E7E4;
 }
 .who-am-i {
   font-style: italic;
   text-decoration: underline;
   padding: 2px 5px;
-  background-color: #D69B03;
+  background-color: var(--v-accent-base);
 }
 </style>

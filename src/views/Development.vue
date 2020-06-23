@@ -45,10 +45,6 @@
 </template>
 
 <style scoped>
-.who-am-i {
-    /* maybe different colour for each page */
-    background-color: #D69B03;
-}
 .history p {
     text-align: left;
 }
