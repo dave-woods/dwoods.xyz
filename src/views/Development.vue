@@ -12,7 +12,7 @@
             </v-col>
         </v-row>
         <v-row>
-            <v-col class="tldr">
+            <v-col cols="12" sm="6" class="tldr">
                 <v-card>
                     <v-card-title>The TL;DR</v-card-title>
                     <v-card-text>
@@ -21,7 +21,7 @@
                 </v-card>
             </v-col>
             <!-- Add full descriptive text and examples of related works/links -->
-            <v-col class="history">
+            <v-col cols="12" sm="6" class="history">
                 <v-card>
                     <v-container class="py-0 v-card__title">
                         <v-row @click="showHistory = !showHistory" style="cursor: pointer">
