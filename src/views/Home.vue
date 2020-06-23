@@ -51,11 +51,15 @@
     </v-container>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .interest-row {
     min-height: 100px;
     border-top: 1px solid black;
-    background-color: #D69B03;
+    /* background-color: #D69B03; */
+    /* background-color: #A73A3A; */
+    a {
+        color: #A73A3A;
+    }
 }
 </style>
 
