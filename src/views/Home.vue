@@ -1,10 +1,20 @@
 <template>
     <v-container>
         <v-row>
-            <h1 style="margin: auto">Hi! I'm David.</h1>
-            <p>I have a mildly eclectic group of interests, so I've decided to create a hub to some of them here. Have a look around, and maybe you'll find something that catches your eye. If you do, feel free to get in touch for a chat!</p>
-            <h4 style="margin: auto">I'm a learner. I'm a creator. I'm a teacher.</h4>
-            <p>I love to seek out new knowledge from all kinds of places, and then to take apart what I've found, and construct new things from the pieces, then pass on what I've discovered along the way to anyone willing to listen.</p>
+            <v-col cols="12">
+                <h1 style="margin: auto">Hi! I'm David.</h1>
+            </v-col>
+        </v-row>
+        <v-row>
+            <v-col cols="12" sm="10">
+                <p>I have a mildly eclectic group of interests, so I've decided to create a hub to talk about some of them here. Have a look around, and maybe you'll find something that catches your eye. If you do, feel free to get in touch for a chat!</p>
+                <h4 style="margin: auto">I'm a learner. I'm a creator. I'm a teacher.</h4>
+                <p>I love to seek out new knowledge from all kinds of places, and then to take apart what I've found, and construct new things from the pieces, then pass on what I've discovered along the way to anyone willing to listen.</p>
+            </v-col>
+            <v-col cols="12" sm="2" style="position: relative; margin: auto">
+                <v-img src="@/assets/img/headshot-transparent.png" max-width="120px" contain class="rounded-lg" style="margin: auto; margin-top: -50px"></v-img>
+                <span class="text-h5 font-weight-black photo-label">Me!</span>
+            </v-col>
         </v-row>
         <v-row class="interest-row">
             <v-col md="2" sm="12" cols="12"><h3><router-link :to="`/development`">Developer</router-link></h3></v-col>
@@ -54,9 +64,21 @@
 <style scoped lang="scss">
 .interest-row {
     min-height: 100px;
-    border-top: 1px solid black;
+    border-top: 5px solid;
+    border-image: linear-gradient(to right, var(--v-primary-base), var(--v-accent-base)) 1;
     a.v-btn {
         color: var(--v-primary-base);
+    }
+}
+.photo-label {
+    display: none;
+    position: absolute;
+    top: -10px;
+    right: 0;
+    transform: rotateZ(30deg);
+    @media screen and (max-width: 800px) {
+        position: initial;
+        // display: initial;
     }
 }
 </style>
