@@ -42,13 +42,23 @@ const routes = [
     component: Visual
   },
   {
-    path: '/write',
+    path: '/blog',
+    redirect: '/blog/read'
+  },
+  {
+    path: '/blog/write',
     name: 'write',
+    props: { writing: true },
     component: Blog
   },
   {
-    path: '/read/:post',
+    path: '/blog/read/',
     name: 'read',
+    component: Blog
+  },
+  {
+    path: '/blog/read/:postId',
+    props: true,
     component: Blog
   },
   {
