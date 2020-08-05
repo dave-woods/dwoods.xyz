@@ -6,6 +6,7 @@ import Music from '@/views/Music.vue'
 import Research from '@/views/Research.vue'
 import Trampolining from '@/views/Trampolining.vue'
 import Visual from '@/views/Visual.vue'
+import Blog from '@/views/Blog.vue'
 
 Vue.use(VueRouter)
 
@@ -39,6 +40,16 @@ const routes = [
     path: '/visual',
     name: 'visual',
     component: Visual
+  },
+  {
+    path: '/write',
+    name: 'write',
+    component: Blog
+  },
+  {
+    path: '/read/:post',
+    name: 'read',
+    component: Blog
   },
   {
     path: '*',
