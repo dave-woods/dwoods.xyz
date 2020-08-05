@@ -1,6 +1,7 @@
 <template>
     <div v-if="postId">
         <blog-post :postId="postId"></blog-post>
+        <v-btn key="see-all-posts-button" to="/blog/read">See all</v-btn>
     </div>
     <div v-else-if="writing">
         <h1>Write Post{{ !saved ? ' *' : ''}}</h1>
