@@ -2,13 +2,13 @@
     <v-container>
         <v-row>
             <v-col>
-                <h1>I'm a <span class="who-am-i">researcher</span>.</h1>
+                <h1>I'm a <span class="who-am-i">{{ whoAmI }}</span>.</h1>
             </v-col>
         </v-row>
         <v-row>
-        <!-- Add large, related image -->
             <v-col>
-                <v-img height="200px" src="@/assets/img/research-large.jpg"></v-img>
+                <!-- path prefix apparently has to be here and not in a variable... -->
+                <v-img v-if="heroSrc" height="200px" :src="require('@/assets/img/' + heroSrc)"></v-img>
             </v-col>
         </v-row>
         <v-row>
@@ -16,7 +16,7 @@
                 <v-card>
                     <v-card-title>The TL;DR</v-card-title>
                     <v-card-text>
-                        <p>I'm currently finishing off a PhD looking into events and time in texts. My main areas of interest are natural language processing and artificial intelligence, though many subfields of linguistics fascinate me.</p>
+                        <p>{{ tldr }}</p>
                     </v-card-text>
                 </v-card>
             </v-col>
@@ -42,15 +42,32 @@
 <script>
 import list from '@/assets/meta/posts'
 export default {
+    props: ['sectionId'],
     data() {
         return {
-            showHistory: false
+            whoAmI: '',
+            tldr: '',
+            heroSrc: ''
         }
     },
     computed: {
         blogPosts() {
-            return list.filter(p => p.tags.includes('research'))
+            return list.filter(p => p.tags.includes(this.sectionId))
         }
+    },
+    methods: {
+        fetchSectionData() {
+            import('@/assets/meta/sections')
+            .then(data => data.default.find(s => s.id === this.sectionId))
+            .then(section => {
+                this.whoAmI = section.whoAmI
+                this.tldr = section.tldr
+                this.heroSrc = section.heroSrc
+            })
+        }
+    },
+    created() {
+        this.fetchSectionData()
     }
 }
 </script>
