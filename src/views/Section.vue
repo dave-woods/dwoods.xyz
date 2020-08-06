@@ -8,6 +8,7 @@
         <v-row>
             <v-col>
                 <!-- path prefix apparently has to be here and not in a variable... -->
+                <!-- https://stackoverflow.com/questions/56806020/vue-cannot-find-the-dynamic-source-of-the-vuetify-v-img-element -->
                 <v-img v-if="heroSrc" height="200px" :src="require('@/assets/img/' + heroSrc)"></v-img>
             </v-col>
         </v-row>

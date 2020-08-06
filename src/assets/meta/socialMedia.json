@@ -1,0 +1,22 @@
+[
+    {
+        "id": "twitter",
+        "url": "https://twitter.com/dwoodscs",
+        "icon": "mdi-twitter"
+    },
+    {
+        "id": "instagram",
+        "url": "https://instagram.com/time_jazz",
+        "icon": "mdi-instagram"
+    },
+    {
+        "id": "linkedin",
+        "url": "https://linkedin.com/dwoodscs",
+        "icon": "mdi-linkedin"
+    },
+    {
+        "id": "github",
+        "url": "https://github.com/dave-woods",
+        "icon": "mdi-github"
+    }
+]
