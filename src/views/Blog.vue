@@ -31,6 +31,7 @@
 
 <script>
 import marked from 'marked'
+import DOMPurify from 'dompurify'
 import list from '@/assets/meta/posts'
 import BlogPost from '@/components/BlogPost'
 export default {
@@ -46,7 +47,7 @@ export default {
     },
     computed: {
         computedMarkdown() {
-            return marked(this.contents)
+            return DOMPurify.sanitize(marked(this.contents))
         },
         blogPosts() {
             return list

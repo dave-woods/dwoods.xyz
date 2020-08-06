@@ -12,6 +12,7 @@
 
 <script>
 import marked from 'marked'
+import DOMPurify from 'dompurify'
 export default {
     props: ['postId'],
     data() {
@@ -23,14 +24,14 @@ export default {
     },
     computed: {
         computedMarkdown() {
-            return marked(this.contents)
+            return DOMPurify.sanitize(marked(this.contents))
         }
     },
     methods: {
         async loadPost() {
             await import(`raw-loader!@/assets/posts/${this.postId}.md`)
             .then(m => {
-                this.contents = marked(m.default)
+                this.contents = DOMPurify.sanitize(marked(m.default))
             })
             .catch (() => {
                 this.contents = 'Error: post not found'
