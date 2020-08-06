@@ -45,7 +45,7 @@
         <v-row class="interest-row">
             <v-col md="2" sm="12" cols="12" align-self="center"><h3><router-link :to="`/research`">Researcher</router-link></h3></v-col>
             <v-col md="8" sm="12" cols="12" style="text-align: left">
-            <p>I've been in the education system since I was 4 years old, most recently while undertaking a PhD on computational methods for representation of events and temporality in text.</p>
+            <p>I've been in some kind of education system since I was 4 years old, most recently while undertaking a PhD on computational methods for representation of events and temporality in text.</p>
             <p>Read an overview of my research interests, and find links to my publications. <v-btn to="/research" tile text><v-icon large>mdi-hand-pointing-right</v-icon></v-btn></p>
             </v-col>
             <v-col md="2" align-self="center">
