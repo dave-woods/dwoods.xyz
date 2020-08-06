@@ -11,9 +11,14 @@
         <div v-html="computedMarkdown"></div>
     </div>
     <div v-else>
-        <ul>
-            <li v-for="bp in blogPosts" :key="bp"><router-link :to="`/blog/read/${bp}`">{{ bp }}</router-link></li>
-        </ul>
+        <v-list>
+            <v-list-item v-for="bp in blogPosts" :key="bp.id">
+            <v-card>
+                <router-link :to="`/blog/read/${bp.id}`"><v-card-title>{{ bp.title }}</v-card-title></router-link>
+                <v-card-subtitle>{{ bp.date }}</v-card-subtitle>
+                <v-card-text>{{ bp.description }}</v-card-text>
+            </v-card></v-list-item>
+        </v-list>
         <v-btn key="new-post-button" to="/blog/write">New</v-btn>
     </div>
 </template>

@@ -1,5 +1,30 @@
 [
-    "test",
-    "another-one",
-    "blog-post"
+    {
+        "id": "test",
+        "date": "2020-08-05",
+        "title": "A Test Post",
+        "description": "The first test post I made",
+        "tags": ["research"]
+    },
+    {
+        "id": "another-one",
+        "date": "2020-08-05",
+        "title": "Another Test Post",
+        "description": "This is another post with a slightly longer description but not too long",
+        "tags": []
+    },
+    {
+        "id": "blog-post",
+        "date": "2020-08-06",
+        "title": "Generic Blog Post",
+        "description": "This post was written in the browser and saved locally before pushing",
+        "tags": ["development"]
+    },
+    {
+        "id": "my-coding-backstory",
+        "date": "2020-07-09",
+        "title": "My Coding Backstory",
+        "description": "A short history of where I've come from in terms of development and code creation...",
+        "tags": ["development"]
+    }
 ]
