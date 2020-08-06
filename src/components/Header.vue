@@ -1,6 +1,6 @@
 <template>
     <v-app-bar app absolute id="site-header">
-        <v-toolbar-title style="color: #E7E7E4; letter-spacing: 3px;">David Woods</v-toolbar-title>
+        <router-link to="/"><v-toolbar-title style="color: #E7E7E4; letter-spacing: 3px;">David Woods</v-toolbar-title></router-link>
         <router-link to="/"><v-img src="@/assets/logo.png" max-height="64px" max-width="64px" contain class="mx-2"></v-img></router-link>
     </v-app-bar>
 </template>
@@ -11,6 +11,10 @@
 
     .v-toolbar__content {
         justify-content: space-between;
+
+        a {
+            text-decoration: none;
+        }
     }
 
     @media screen and (max-width: 960px) {
