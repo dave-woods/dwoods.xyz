@@ -33,9 +33,18 @@ const routes = [
     component: Blog
   },
   {
+    path: '/blog/tag/:tag',
+    props: true,
+    component: Blog
+  },
+  {
     path: '/section/:sectionId',
     props: true,
     component: Section
+  },
+  {
+    path: '/research',
+    redirect: '/section/research'
   },
   {
     path: '*',

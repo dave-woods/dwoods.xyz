@@ -1,12 +1,30 @@
 <template>
     <div>
-        <div v-html="computedMarkdown"></div>
-        <hr/>
-        <div>{{ postDate }}</div>
-        <div v-if="postTags && postTags.length > 0">
-            <router-link class="primary white--text pa-1 ma-2" v-for="tag in postTags" :to="`/section/${tag}`" :key="`tag-${tag}`">+ {{tag}}</router-link>
-        </div>
-        <hr/>
+        <v-container>
+            <v-row>
+                <v-col class="white pa-8 rounded flex text-justify">
+                    <div v-html="computedMarkdown"></div>
+                </v-col>
+            </v-row>
+            <v-row class="my-2" justify="space-between">
+                <v-col cols="4">
+                <div>Posted on {{ niceDate }}</div>
+                </v-col>
+                <v-col v-if="postTags && postTags.length > 0" cols="6" class="text-right">
+                    <v-chip
+                        v-for="tag in postTags"
+                        :key="`tag-${tag}`"
+                        :to="`/blog/tag/${tag}`"
+                        color="primary"
+                        class="ma-1"
+                        label
+                        link
+                    >
+                        #{{tag}}
+                    </v-chip>
+                </v-col>
+            </v-row>
+        </v-container>
     </div>
 </template>
 
@@ -25,6 +43,9 @@ export default {
     computed: {
         computedMarkdown() {
             return DOMPurify.sanitize(marked(this.contents))
+        },
+        niceDate() {
+            return new Date(this.postDate).toDateString()
         }
     },
     methods: {

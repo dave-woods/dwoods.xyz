@@ -1,7 +1,7 @@
 <template>
     <v-container>
         <v-row>
-            <v-col>
+            <v-col class="text-center">
                 <h1>I'm a <span class="who-am-i">{{ whoAmI }}</span>.</h1>
             </v-col>
         </v-row>

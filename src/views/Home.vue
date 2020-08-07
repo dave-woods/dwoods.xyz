@@ -1,5 +1,5 @@
 <template>
-    <v-container>
+    <v-container class="text-center">
         <v-row>
             <v-col cols="12">
                 <h1 style="margin: auto">Hi! I'm David.</h1>
