@@ -1,4 +1,6 @@
 <template>
+    <v-container>
+    <v-card class="px-4">
     <v-container class="text-center">
         <v-row>
             <v-col cols="12">
@@ -78,6 +80,8 @@
         <!-- TODO: fill in rows for other link -->
         <!-- possibly use different colours for each -->
     </v-container>
+    </v-card>
+    </v-container>
 </template>
 
 <style scoped lang="scss">
@@ -106,7 +110,7 @@
 export default {
     data() {
         return {
-            links: ['development', 'music', 'research', 'trampolining', 'visual']
+            links: ['development', 'music', 'research', 'trampolining', 'visual'],
         }
     }
 }
