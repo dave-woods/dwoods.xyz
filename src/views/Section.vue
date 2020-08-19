@@ -29,7 +29,7 @@
                     <v-list>
                         <v-list-item v-for="bp in blogPosts" :key="bp.id">
                         <v-card flat>
-                            <router-link :to="`/blog/read/${bp.id}`"><v-card-title>{{ bp.title }}</v-card-title></router-link>
+                            <router-link :to="`/blog/read/${bp.slug}`"><v-card-title>{{ bp.title }}</v-card-title></router-link>
                             <v-card-subtitle>{{ bp.date }}</v-card-subtitle>
                             <v-card-text>{{ bp.description }}</v-card-text>
                         </v-card></v-list-item>
@@ -41,7 +41,6 @@
 </template>
 
 <script>
-import list from '@/assets/meta/posts'
 export default {
     props: ['sectionId'],
     data() {
@@ -53,7 +52,7 @@ export default {
     },
     computed: {
         blogPosts() {
-            return list.filter(p => p.tags.includes(this.sectionId))
+            return this.$store.getters.getPosts(this.sectionId)
         }
     },
     methods: {

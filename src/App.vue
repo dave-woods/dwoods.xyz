@@ -21,6 +21,9 @@ export default {
   components: {
     'app-header': Header,
     'app-footer': Footer
+  },
+  created() {
+      this.$store.dispatch('retrievePosts')
   }
 }
 </script>

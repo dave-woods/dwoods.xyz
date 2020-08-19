@@ -8,7 +8,7 @@
             </v-row>
             <v-row class="my-2" justify="space-between">
                 <v-col cols="4">
-                <div>Posted on {{ niceDate }}</div>
+                <div v-show="niceDate">Posted on {{ niceDate }}</div>
                 </v-col>
                 <v-col v-if="postTags && postTags.length > 0" cols="6" class="text-right">
                     <v-chip
@@ -33,40 +33,19 @@ import marked from 'marked'
 import DOMPurify from 'dompurify'
 export default {
     props: ['postId'],
-    data() {
-        return {
-            contents: 'Loading post',
-            postDate: '',
-            postTags: null
-        }
-    },
     computed: {
         computedMarkdown() {
-            return DOMPurify.sanitize(marked(this.contents))
+            return DOMPurify.sanitize(marked(this.postData?.contents || ''))
         },
         niceDate() {
-            return new Date(this.postDate).toDateString()
+            return this.postData && new Date(this.postData.timestamp).toLocaleDateString('en-ie')
+        },
+        postData() {
+            return this.$store.getters.getPostBySlug(this.postId)
+        },
+        postTags() {
+            return this.postData?.tags || []
         }
-    },
-    methods: {
-        async loadPost() {
-            await import(`raw-loader!@/assets/posts/${this.postId}.md`)
-            .then(m => {
-                this.contents = DOMPurify.sanitize(marked(m.default))
-            })
-            .catch (() => {
-                this.contents = 'Error: post not found'
-            })
-            await import('@/assets/meta/posts')
-            .then(data => data.default.find(p => p.id === this.postId))
-            .then(({date, tags}) => {
-                this.postDate = date
-                this.postTags = tags
-            })
-        }
-    },
-    created() {
-        this.loadPost()
     }
 }
 </script>

@@ -16,6 +16,12 @@
     <div class="text-center" v-else-if="writing">
         <h1>Write Post{{ !saved ? ' *' : ''}}</h1>
         <v-container>
+            <v-row dense>
+                <v-col><v-text-field v-model="title" placeholder="Post title"></v-text-field></v-col>
+            </v-row>
+            <v-row dense>
+                <v-col><v-text-field v-model="description" placeholder="Post description"></v-text-field></v-col>
+            </v-row>
             <v-row>
                 <v-col cols="12" sm="6" style="max-height: 400px; overflow-y: auto">
                     <v-textarea auto-grow class="monospace"  placeholder="Write your markdown here" v-model="contents"></v-textarea>
@@ -25,8 +31,11 @@
                     <div class="white pa-6 text-left" v-html="computedMarkdown"></div>
                 </v-col>
             </v-row>
+            <v-row dense>
+                <v-col><v-text-field v-model="tags" placeholder="Post tags"></v-text-field></v-col>
+            </v-row>
         </v-container>
-        <v-btn key="save-text-button" @click="downloadMarkdown">Save Markdown</v-btn>
+        <v-btn key="upload-post-button" @click="uploadPost">Upload Post</v-btn>
     </div>
     <div v-else>
         <v-container>
@@ -36,8 +45,8 @@
                         <v-list>
                             <v-list-item v-for="bp in blogPosts" :key="bp.id">
                             <v-card flat tile class="flex">
-                                <router-link :to="`/blog/read/${bp.id}`"><v-card-title>{{ bp.title }}</v-card-title></router-link>
-                                <v-card-subtitle>{{ bp.date }}</v-card-subtitle>
+                                <router-link :to="`/blog/read/${bp.slug}`"><v-card-title>{{ bp.title }}</v-card-title></router-link>
+                                <v-card-subtitle>{{ new Date(bp.timestamp).toLocaleDateString('en-ie') }}</v-card-subtitle>
                                 <v-card-text><p>{{ bp.description }}</p></v-card-text>
                             </v-card></v-list-item>
                         </v-list>
@@ -69,7 +78,6 @@
 <script>
 import marked from 'marked'
 import DOMPurify from 'dompurify'
-import list from '@/assets/meta/posts'
 import BlogPost from '@/components/BlogPost'
 import TwitterFeed from '@/components/TwitterFeed.vue'
 export default {
@@ -81,6 +89,9 @@ export default {
     data() {
         return {
             contents: '# Title\n\nContents',
+            title: '',
+            description: '',
+            tags: '',
             saved: true
         }
     },
@@ -89,7 +100,13 @@ export default {
             return DOMPurify.sanitize(marked(this.contents))
         },
         blogPosts() {
-            return this.tag ? list.filter(bp => bp.tags.includes(this.tag)) : list
+            return this.$store.getters.getPosts(this.tag)
+        },
+        slug() {
+            return this.title.toLowerCase().replace(/\s+/g, '-')
+        },
+        tagList() {
+            return this.tags.toLowerCase().split(', ')
         }
     },
     watch: {
@@ -98,20 +115,23 @@ export default {
         }
     },
     methods: {
-        downloadMarkdown() {
-            const file = new Blob([this.contents], {type: 'text/plain'})
-            const a = document.createElement('a')
-            const url = URL.createObjectURL(file)
-            a.href = url
-            a.download = 'blog-post.md'
-            a.style.display = 'none'
-            document.body.appendChild(a)
-            a.click()
-            setTimeout(() => {
-                document.body.removeChild(a)
-                window.URL.revokeObjectURL(url)
+        uploadPost() {
+            this.$store.dispatch('addPost', {
+                title: this.title,
+                description: this.description,
+                timestamp: Date.now(),
+                slug: this.slug,
+                contents: this.contents,
+                tags: this.tagList
+            }).then(() => {
+                let s = this.slug
                 this.saved = true
-            }, 0)
+                this.title = ''
+                this.description = ''
+                this.contents = ''
+                this.tags = ''
+                this.$router.push(`/blog/read/${s}`)
+            })
         }
     },
     beforeRouteLeave(to, from, next) {
