@@ -4,6 +4,8 @@ import Home from '@/views/Home.vue'
 import Section from '@/views/Section.vue'
 import Blog from '@/views/Blog.vue'
 
+import { auth } from '@/firebase'
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -20,7 +22,10 @@ const routes = [
     path: '/blog/write',
     name: 'write',
     props: { writing: true },
-    component: Blog
+    component: Blog,
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/blog/read/',
@@ -57,6 +62,17 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  const requiresAuth = to.matched.some(x => x.meta.requiresAuth)
+
+  if (requiresAuth && !auth.currentUser) {
+    alert('Sign in required')
+    if (from.name === null) next('/')
+  } else {
+    next()
+  }
 })
 
 export default router
