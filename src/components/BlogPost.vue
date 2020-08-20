@@ -1,6 +1,13 @@
 <template>
     <div>
-        <v-container>
+        <v-progress-linear
+            color="primary"
+            indeterminate
+            rounded
+            height="6"
+            v-if="loading"
+          ></v-progress-linear>
+        <v-container v-else>
             <v-row>
                 <v-col class="white pa-8 rounded flex text-justify">
                     <div v-html="computedMarkdown"></div>
@@ -10,9 +17,9 @@
                 <v-col cols="4">
                 <div v-show="niceDate">Posted on {{ niceDate }}</div>
                 </v-col>
-                <v-col v-if="postTags && postTags.length > 0" cols="6" class="text-right">
+                <v-col v-if="tags && tags.length > 0" cols="6" class="text-right">
                     <v-chip
-                        v-for="tag in postTags"
+                        v-for="tag in tags"
                         :key="`tag-${tag}`"
                         :to="`/blog/tag/${tag}`"
                         color="primary"
@@ -35,16 +42,19 @@ export default {
     props: ['postId'],
     computed: {
         computedMarkdown() {
-            return DOMPurify.sanitize(marked(this.postData?.contents || ''))
+            return this.post ? DOMPurify.sanitize(marked('# ' + this.post.title + '\n\n' + this.post.contents)) : 'Loading post'
         },
         niceDate() {
-            return this.postData && new Date(this.postData.timestamp).toLocaleDateString('en-ie')
+            return this.post ? new Date(this.post.timestamp).toDateString() : ''
         },
-        postData() {
+        tags() {
+            return this.post ? this.post.tags : []
+        },
+        post() {
             return this.$store.getters.getPostBySlug(this.postId)
         },
-        postTags() {
-            return this.postData?.tags || []
+        loading() {
+            return this.$store.state.posts.loading
         }
     }
 }

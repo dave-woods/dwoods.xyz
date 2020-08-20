@@ -28,7 +28,7 @@
         <!-- Should maybe _.debounce the above -->
                 </v-col>
                 <v-col cols="12" sm="6" style="max-height: 400px; overflow-y: auto">
-                    <div class="white pa-6 text-left" v-html="computedMarkdown"></div>
+                    <div class="white pa-6 text-left" style="min-height: 120px" v-html="computedMarkdown"></div>
                 </v-col>
             </v-row>
             <v-row dense>
@@ -40,8 +40,17 @@
     <div v-else>
         <v-container>
             <v-row>
-                <v-col cols="12" :sm="tag ? 12 :6">
+                <v-col cols="12" :sm="tag ? 12 : 6">
                     <v-card flat max-height="600" class="blog-card">
+                        <v-progress-linear
+                            color="primary"
+                            indeterminate
+                            rounded
+                            height="6"
+                            v-if="loading"
+                        ></v-progress-linear>
+                        <v-card-title v-if="!loading && !blogPosts.length">No posts found with tag "{{ tag }}"</v-card-title>
+                        <v-card-text v-if="!loading && !blogPosts.length"><router-link to="/blog">Go back</router-link></v-card-text>
                         <v-list>
                             <v-list-item v-for="bp in blogPosts" :key="bp.id">
                             <v-card flat tile class="flex">
@@ -88,7 +97,7 @@ export default {
     },
     data() {
         return {
-            contents: '# Title\n\nContents',
+            contents: '',
             title: '',
             description: '',
             tags: '',
@@ -97,7 +106,7 @@ export default {
     },
     computed: {
         computedMarkdown() {
-            return DOMPurify.sanitize(marked(this.contents))
+            return DOMPurify.sanitize(marked('# ' + this.title + '\n\n' + this.contents))
         },
         blogPosts() {
             return this.$store.getters.getPosts(this.tag)
@@ -107,6 +116,9 @@ export default {
         },
         tagList() {
             return this.tags.toLowerCase().split(', ')
+        },
+        loading() {
+            return this.$store.state.posts.loading
         }
     },
     watch: {
