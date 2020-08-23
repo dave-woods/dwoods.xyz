@@ -17,17 +17,22 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    async login({ commit }) {
+    async login(context) {
       auth.signInWithPopup(provider).then(result => {
-        commit('setUser', result.user)
+        context.dispatch('setUser', result.user)
       })
       .catch(err => {
-        if (err.code !== 'auth/popup-closed-by-user') console.error(err)
+        if (err.code !== 'auth/popup-closed-by-user') console.error(err.message)
       })
     },
     async logout({ commit }) {
       await auth.signOut()
       commit('setUser', {})
+    },
+    setUser({ commit }, user) {
+      let isAdmin = user.uid === 'oGt1gEXpKohT1cNo2JyAQ7JqcBy1'
+      let { displayName, email, photoURL, uid } = user
+      commit('setUser', {uid, displayName, email, photoURL, isAdmin})
     }
   },
   modules: {
