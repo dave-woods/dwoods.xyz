@@ -7,31 +7,31 @@
             height="6"
             v-if="loading"
           ></v-progress-linear>
-        <v-container v-else>
-            <v-row>
-                <v-col class="white pa-8 rounded flex text-justify">
-                    <div v-html="computedMarkdown"></div>
-                </v-col>
-            </v-row>
-            <v-row class="my-2" justify="space-between">
-                <v-col cols="4">
-                <div v-show="niceDate">Posted on {{ niceDate }}</div>
-                </v-col>
-                <v-col v-if="tags && tags.length > 0" cols="6" class="text-right">
+        <div v-else>
+            <div class="white pa-8 rounded flex text-left" style="position: relative">
+                <div v-html="computedMarkdown"></div>
+                <div style="position: absolute; top: 0; right: 0;" class="pa-2">
+                    <v-btn v-if="user.isAdmin" icon @click="editPost"><v-icon>mdi-pencil</v-icon></v-btn>
+                    <v-btn v-if="user.isAdmin" icon @click="deletePost"><v-icon>mdi-delete</v-icon></v-btn>
+                </div>
+            </div>
+            <div class="my-2 d-flex justify-space-between" >
+                <div style="min-width: 50%" v-show="niceDate">Posted on {{ niceDate }}</div>
+                <div v-if="tags && tags.length > 0" class="text-right">
                     <v-chip
                         v-for="tag in tags"
                         :key="`tag-${tag}`"
                         :to="`/blog/tag/${tag}`"
                         color="primary"
-                        class="ma-1"
+                        class="ml-1 mb-1"
                         label
                         link
                     >
                         #{{tag}}
                     </v-chip>
-                </v-col>
-            </v-row>
-        </v-container>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -39,7 +39,7 @@
 import marked from 'marked'
 import DOMPurify from 'dompurify'
 export default {
-    props: ['postId'],
+    props: ['postSlug'],
     computed: {
         computedMarkdown() {
             return this.post ? DOMPurify.sanitize(marked('# ' + this.post.title + '\n\n' + this.post.contents)) : 'Loading post'
@@ -51,10 +51,25 @@ export default {
             return this.post ? this.post.tags : []
         },
         post() {
-            return this.$store.getters.getPostBySlug(this.postId)
+            return this.$store.getters.getPostBySlug(this.postSlug)
+        },
+        user() {
+            return this.$store.state.user
         },
         loading() {
             return this.$store.state.posts.loading
+        }
+    },
+    methods: {
+        editPost() {
+
+        },
+        deletePost() {
+            if (window.confirm('Are you sure you want to delete this post?')) {
+                this.$store.dispatch('deletePost', this.post.id).then(() => {
+                    this.$router.push('/blog')
+                })
+            }
         }
     }
 }

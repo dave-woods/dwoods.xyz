@@ -1,9 +1,9 @@
 <template>
-    <div v-if="postId">
+    <div v-if="postSlug">
         <v-container>
             <v-row>
                 <v-col>
-                    <blog-post :postId="postId"></blog-post>
+                    <blog-post :postSlug="postSlug"></blog-post>
                 </v-col>
             </v-row>
             <v-row>
@@ -35,12 +35,15 @@
                 <v-col><v-text-field v-model="tags" placeholder="Post tags"></v-text-field></v-col>
             </v-row>
         </v-container>
-        <v-btn key="upload-post-button" @click="uploadPost">Upload Post</v-btn>
+        <div class="d-flex justify-center">
+            <v-btn key="save-post-button" @click="savePost" class="mx-2">Save</v-btn>
+            <v-btn key="publish-post-button" @click="publishPost" class="mx-2">Publish</v-btn>
+        </div>
     </div>
     <div v-else>
         <v-container>
             <v-row>
-                <v-col cols="12" :sm="tag ? 12 : 6">
+                <v-col>
                     <v-card flat max-height="600" class="blog-card">
                         <v-progress-linear
                             color="primary"
@@ -49,7 +52,7 @@
                             height="6"
                             v-if="loading"
                         ></v-progress-linear>
-                        <v-card-title v-if="!loading && !blogPosts.length">No posts found with tag "{{ tag }}"</v-card-title>
+                        <v-card-title v-if="!loading && !blogPosts.length">No posts found</v-card-title>
                         <v-card-text v-if="!loading && !blogPosts.length"><router-link to="/blog">Go back</router-link></v-card-text>
                         <v-list>
                             <v-list-item v-for="bp in blogPosts" :key="bp.id">
@@ -60,12 +63,17 @@
                             </v-card></v-list-item>
                         </v-list>
                     </v-card>
-                    <div style="position: relative">
+                    <div v-if="user.isAdmin" style="position: relative">
                         <v-btn fab absolute right bottom key="new-post-button" to="/blog/write">New</v-btn>
                     </div>
                 </v-col>
-                <v-col v-if="!tag" cols="12" sm="6">
+                <!-- <v-col v-if="!tag" cols="12" sm="6">
                     <twitter-feed url="dwoodscs"  height="600"></twitter-feed>
+                </v-col> -->
+            </v-row>
+            <v-row v-if="tag">
+                <v-col class="text-center">
+                    <v-btn key="see-all-posts-button" to="/blog/read">See all</v-btn>
                 </v-col>
             </v-row>
         </v-container>
@@ -88,12 +96,12 @@
 import marked from 'marked'
 import DOMPurify from 'dompurify'
 import BlogPost from '@/components/BlogPost'
-import TwitterFeed from '@/components/TwitterFeed.vue'
+// import TwitterFeed from '@/components/TwitterFeed.vue'
 export default {
-    props: ['postId', 'writing', 'tag'],
+    props: ['postSlug', 'writing', 'tag'],
     components: {
         'blog-post': BlogPost,
-        'twitter-feed': TwitterFeed
+        // 'twitter-feed': TwitterFeed
     },
     data() {
         return {
@@ -109,16 +117,19 @@ export default {
             return DOMPurify.sanitize(marked('# ' + this.title + '\n\n' + this.contents))
         },
         blogPosts() {
-            return this.$store.getters.getPosts(this.tag)
+            return this.$store.getters.getPublishedPosts(this.tag)
         },
         slug() {
             return this.title.toLowerCase().replace(/\s+/g, '-')
         },
         tagList() {
-            return this.tags.toLowerCase().split(', ')
+            return this.tags.toLowerCase().split(/,\s*/).filter(t => t !== '')
         },
         loading() {
             return this.$store.state.posts.loading
+        },
+        user() {
+            return this.$store.state.user
         }
     },
     watch: {
@@ -127,14 +138,30 @@ export default {
         }
     },
     methods: {
-        uploadPost() {
+        savePost() {
             this.$store.dispatch('addPost', {
                 title: this.title,
                 description: this.description,
                 timestamp: Date.now(),
                 slug: this.slug,
                 contents: this.contents,
-                tags: this.tagList
+                tags: this.tagList,
+                author: this.user.uid,
+                published: false
+            }).then(() => {
+                this.saved = true
+            })
+        },
+        publishPost() {
+            this.$store.dispatch('addPost', {
+                title: this.title,
+                description: this.description,
+                timestamp: Date.now(),
+                slug: this.slug,
+                contents: this.contents,
+                tags: this.tagList,
+                author: this.user.uid,
+                published: true
             }).then(() => {
                 let s = this.slug
                 this.saved = true
