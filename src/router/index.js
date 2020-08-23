@@ -33,7 +33,7 @@ const routes = [
     component: Blog
   },
   {
-    path: '/blog/read/:postId',
+    path: '/blog/read/:postSlug',
     props: true,
     component: Blog
   },
