@@ -1,8 +1,9 @@
-import { postsCollection } from '@/firebase.js'
+import { postsCollection, auth } from '@/firebase.js'
 export default {
     state: {
         posts: [],
-        loading: false
+        loading: false,
+        loaded: false
     },
     getters: {
         getPosts: (state) => tag => tag ? state.posts.filter(p => p.tags.includes(tag)) : state.posts,
@@ -26,12 +27,14 @@ export default {
         },
         setLoading(state, loading) {
             state.loading = loading
+            state.loaded = !loading
         }
     },
     actions: {
         retrievePosts({ commit }) {
             commit('setLoading', true)
-            postsCollection.orderBy('timestamp', 'desc').get().then(snapshot => {
+            postsCollection.orderBy('timestamp', 'desc').get()
+            .then(snapshot => {
                 let postsArray = []
                 snapshot.forEach(doc => {
                     postsArray.push({
@@ -41,6 +44,10 @@ export default {
                 });
                 commit('setLoading', false)
                 commit('setPosts', postsArray)
+            })
+            .catch(err => {
+                commit('setLoading', false)
+                console.error(err)
             })
         },
         addPost({ commit }, newPost) {
@@ -57,11 +64,13 @@ export default {
             })
         },
         deletePost({ commit }, postID) {
+            if (!auth.currentUser) return alert('Insufficient permission')
             postsCollection.doc(postID).delete().then(() => {
                 commit('deletePost', postID)
             })
         },
         updatePost({ commit }, { id, data }) {
+            if (!auth.currentUser) return alert('Insufficient permission')
             postsCollection.doc(id).update(data).then(() => {
                 commit('updatePost', { id, data })
             })

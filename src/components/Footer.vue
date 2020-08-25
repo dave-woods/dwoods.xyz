@@ -8,7 +8,7 @@
                 </v-btn>
             </v-card-title>
             <v-card-text class="py-2 white--text text-center">
-                © {{ new Date().getFullYear() }} — <strong>Dave Woods</strong>
+                © {{ new Date().getFullYear() }} — <strong>David Woods</strong>
             </v-card-text>
         </v-card>
     </v-footer>

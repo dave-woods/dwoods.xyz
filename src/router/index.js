@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Home from '@/views/Home.vue'
 import Section from '@/views/Section.vue'
 import Blog from '@/views/Blog.vue'
+import Write from '@/views/Write.vue'
 
 import { auth } from '@/firebase'
 
@@ -15,31 +16,22 @@ const routes = [
     component: Home
   },
   {
-    path: '/blog',
-    redirect: '/blog/read'
-  },
-  {
-    path: '/blog/write',
+    path: '/write/:id?',
     name: 'write',
-    props: { writing: true },
-    component: Blog,
+    props: true,
+    component: Write,
     meta: {
       requiresAuth: true
     }
   },
   {
-    path: '/blog/read/',
+    path: '/read/:postSlug?',
     name: 'read',
-    component: Blog
-  },
-  {
-    path: '/blog/read/:postSlug',
-    props: true,
-    component: Blog
-  },
-  {
-    path: '/blog/tag/:tag',
-    props: true,
+    props: route => ({
+      postSlug: route.params.postSlug,
+      tag: route.query.tag,
+      drafts: route.query.drafts
+    }),
     component: Blog
   },
   {
