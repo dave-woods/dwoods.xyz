@@ -65,7 +65,7 @@
                         </v-list>
                     </v-card>
                     <div v-if="user.isAdmin" style="position: relative">
-                        <v-btn v-if="drafts.length > 0" fab absolute left bottom key="drafts-button" to="/blog/write">Drafts</v-btn>
+                        <v-btn v-if="drafts.length > 0" fab absolute left bottom key="drafts-button">Drafts</v-btn>
                         <v-btn fab absolute right bottom key="new-post-button" to="/blog/write">New</v-btn>
                     </div>
                 </v-col>
@@ -131,10 +131,10 @@ export default {
             return this.$store.getters.getUnpublishedPostsByAuthor(this.user.uid)
         },
         slug() {
-            return this.title.toLowerCase().replace(/\s+/g, '-')
+            return this.quickSanitise(this.title).toLowerCase().replace(/\s+/g, '-')
         },
         tagList() {
-            return this.tags.toLowerCase().split(/,\s*/).filter(t => t !== '')
+            return this.tags.toLowerCase().split(/,\s*/).map(this.quickSanitise).filter(t => t !== '')
         },
         loading() {
             return this.$store.state.posts.loading
@@ -149,7 +149,6 @@ export default {
         }
     },
     methods: {
-        
         savePost(published = false) {
             const payload = {
                 title: this.title,
@@ -179,26 +178,29 @@ export default {
             })
         },
         publishPost() {
+            if (!window.confirm('Are you sure?')) return
             this.savePost(true).then(() => {
                 let s = this.slug
-                this.saved = true
-                this.title = ''
-                this.description = ''
-                this.contents = ''
-                this.tags = ''
-                this.postID = ''
+                this.resetFields()
                 this.$router.push(`/blog/read/${s}`)
             })
-        }
-    },
-    beforeRouteLeave(to, from, next) {
-        if (this.saved || window.confirm('Do you really want to leave? you have unsaved changes!')) {
+        },
+        resetFields() {
             this.saved = true
             this.title = ''
             this.description = ''
             this.contents = ''
             this.tags = ''
             this.postID = ''
+        },
+        // mixin?
+        quickSanitise(string) {
+            return string.replace(/[^a-zA-Z0-9 ]/g, '').trim()
+        }
+    },
+    beforeRouteLeave(to, from, next) {
+        if (this.saved || window.confirm('Do you really want to leave? You have unsaved changes!')) {
+            this.resetFields()
             next()
         } else {
             next(false)
