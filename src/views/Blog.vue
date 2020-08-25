@@ -3,6 +3,7 @@
         <v-container>
             <v-row>
                 <v-col>
+                    <!-- Load post here and pass in, rather than slug -->
                     <blog-post :postSlug="postSlug"></blog-post>
                 </v-col>
             </v-row>
@@ -13,11 +14,11 @@
             </v-row>
         </v-container>
     </div>
-    <div class="text-center" v-else-if="writing">
+    <v-form class="text-center" v-model="formValid" v-else-if="writing">
         <h1>Write Post{{ !saved ? ' *' : ''}}</h1>
         <v-container>
             <v-row dense>
-                <v-col><v-text-field v-model="title" placeholder="Post title"></v-text-field></v-col>
+                <v-col><v-text-field v-model="title" placeholder="Post title" :rules="[rules.required, rules.uniqueTitle]"></v-text-field></v-col>
             </v-row>
             <v-row dense>
                 <v-col><v-text-field v-model="description" placeholder="Post description"></v-text-field></v-col>
@@ -36,10 +37,10 @@
             </v-row>
         </v-container>
         <div class="d-flex justify-center">
-            <v-btn key="save-post-button" @click="savePost" class="mx-2">Save</v-btn>
-            <v-btn key="publish-post-button" @click="publishPost" class="mx-2">Publish</v-btn>
+            <v-btn key="save-post-button" @click="savePost(false)" class="mx-2">Save</v-btn>
+            <v-btn :disabled="!formValid" key="publish-post-button" @click="publishPost" class="mx-2">Publish</v-btn>
         </div>
-    </div>
+    </v-form>
     <div v-else>
         <v-container>
             <v-row>
@@ -52,10 +53,10 @@
                             height="6"
                             v-if="loading"
                         ></v-progress-linear>
-                        <v-card-title v-if="!loading && !blogPosts.length">No posts found</v-card-title>
-                        <v-card-text v-if="!loading && !blogPosts.length"><router-link to="/blog">Go back</router-link></v-card-text>
+                        <v-card-title v-if="!loading && !postsList.length">No posts found</v-card-title>
+                        <v-card-text v-if="!loading && !postsList.length"><router-link to="/blog">Go back</router-link></v-card-text>
                         <v-list>
-                            <v-list-item v-for="bp in blogPosts" :key="bp.id">
+                            <v-list-item v-for="bp in postsList" :key="bp.id">
                             <v-card flat tile class="flex">
                                 <router-link :to="`/blog/read/${bp.slug}`"><v-card-title>{{ bp.title }}</v-card-title></router-link>
                                 <v-card-subtitle>{{ new Date(bp.timestamp).toLocaleDateString('en-ie') }}</v-card-subtitle>
@@ -64,6 +65,7 @@
                         </v-list>
                     </v-card>
                     <div v-if="user.isAdmin" style="position: relative">
+                        <v-btn v-if="drafts.length > 0" fab absolute left bottom key="drafts-button" to="/blog/write">Drafts</v-btn>
                         <v-btn fab absolute right bottom key="new-post-button" to="/blog/write">New</v-btn>
                     </div>
                 </v-col>
@@ -109,15 +111,24 @@ export default {
             title: '',
             description: '',
             tags: '',
-            saved: true
+            saved: true,
+            rules: {
+                required: value => !!value || 'Required',
+                uniqueTitle: () => this.$store.getters.getPostBySlug(this.slug)?.published ? "A post already exists with this title." : true
+            },
+            formValid: false,
+            postID: ''
         }
     },
     computed: {
         computedMarkdown() {
             return DOMPurify.sanitize(marked('# ' + this.title + '\n\n' + this.contents))
         },
-        blogPosts() {
+        postsList() {
             return this.$store.getters.getPublishedPosts(this.tag)
+        },
+        drafts() {
+            return this.$store.getters.getUnpublishedPostsByAuthor(this.user.uid)
         },
         slug() {
             return this.title.toLowerCase().replace(/\s+/g, '-')
@@ -138,8 +149,9 @@ export default {
         }
     },
     methods: {
-        savePost() {
-            this.$store.dispatch('addPost', {
+        
+        savePost(published = false) {
+            const payload = {
                 title: this.title,
                 description: this.description,
                 timestamp: Date.now(),
@@ -147,34 +159,46 @@ export default {
                 contents: this.contents,
                 tags: this.tagList,
                 author: this.user.uid,
-                published: false
-            }).then(() => {
-                this.saved = true
+                published
+            }
+            return new Promise((resolve, reject) => {
+                if (this.postID) {
+                    this.$store.dispatch('updatePost', {id: this.postID, data: payload}) //maybe reduce payload to just changed data
+                    .then(() => {
+                        this.saved = true
+                        resolve()
+                    })
+                } else {
+                    this.$store.dispatch('addPost', payload)
+                    .then(postID => {
+                        this.postID = postID
+                        this.saved = true
+                        resolve()
+                    })
+                }
             })
         },
         publishPost() {
-            this.$store.dispatch('addPost', {
-                title: this.title,
-                description: this.description,
-                timestamp: Date.now(),
-                slug: this.slug,
-                contents: this.contents,
-                tags: this.tagList,
-                author: this.user.uid,
-                published: true
-            }).then(() => {
+            this.savePost(true).then(() => {
                 let s = this.slug
                 this.saved = true
                 this.title = ''
                 this.description = ''
                 this.contents = ''
                 this.tags = ''
+                this.postID = ''
                 this.$router.push(`/blog/read/${s}`)
             })
         }
     },
     beforeRouteLeave(to, from, next) {
         if (this.saved || window.confirm('Do you really want to leave? you have unsaved changes!')) {
+            this.saved = true
+            this.title = ''
+            this.description = ''
+            this.contents = ''
+            this.tags = ''
+            this.postID = ''
             next()
         } else {
             next(false)
