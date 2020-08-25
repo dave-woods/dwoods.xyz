@@ -8,7 +8,7 @@
             v-if="loading"
         ></v-progress-linear>
         <v-card-title v-if="!loading && !postsList.length">No posts found</v-card-title>
-        <v-card-text v-if="!loading && !postsList.length"><router-link to="/read">Go back</router-link></v-card-text>
+        <v-card-text v-if="!loading && !postsList.length"><router-link to="/read">See all</router-link></v-card-text>
         <v-list>
             <v-list-item v-for="post in postsList" :key="post.id">
                 <v-card flat tile class="flex">

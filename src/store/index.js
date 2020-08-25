@@ -3,7 +3,8 @@ import Vuex from 'vuex'
 
 import { auth, provider } from '@/firebase'
 
-import Posts from './modules/Posts'
+import PostsModule from './modules/posts'
+import SectionsModule from './modules/sections'
 
 Vue.use(Vuex)
 
@@ -36,6 +37,7 @@ export default new Vuex.Store({
     }
   },
   modules: {
-    posts: Posts
+    posts: PostsModule,
+    sections: SectionsModule
   }
 })

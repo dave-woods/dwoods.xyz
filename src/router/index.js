@@ -35,7 +35,7 @@ const routes = [
     component: Blog
   },
   {
-    path: '/section/:sectionId',
+    path: '/section/:sectionID',
     props: true,
     component: Section
   },

@@ -14,35 +14,27 @@
         </v-row>
         <v-row>
             <v-col cols="12" sm="6" class="tldr">
-                <v-card>
+                <v-card flat>
                     <v-card-title>The TL;DR</v-card-title>
                     <v-card-text>
                         <p>{{ tldr }}</p>
                     </v-card-text>
                 </v-card>
             </v-col>
-        </v-row>
-        <v-row>
-            <v-col>
-                <v-card>
-                    <v-card-title>Posts</v-card-title>
-                    <v-list>
-                        <v-list-item v-for="bp in blogPosts" :key="bp.id">
-                        <v-card flat>
-                            <router-link :to="`/read/${bp.slug}`"><v-card-title>{{ bp.title }}</v-card-title></router-link>
-                            <v-card-subtitle>{{ bp.date }}</v-card-subtitle>
-                            <v-card-text>{{ bp.description }}</v-card-text>
-                        </v-card></v-list-item>
-                    </v-list>
-                </v-card>
+            <v-col cols="12" sm="6">
+                <post-list :postsList="blogPosts"></post-list>
             </v-col>
         </v-row>
     </v-container>
 </template>
 
 <script>
+import PostList from '@/components/PostList'
 export default {
-    props: ['sectionId'],
+    props: ['sectionID'],
+    components: {
+        'post-list': PostList
+    },
     data() {
         return {
             whoAmI: '',
@@ -52,22 +44,16 @@ export default {
     },
     computed: {
         blogPosts() {
-            return this.$store.getters.getPosts(this.sectionId)
+            return this.$store.getters.getPosts(this.sectionID)
+        },
+        section() {
+            return this.$store.getters.getSectionByID(this.sectionID)
         }
     },
-    methods: {
-        fetchSectionData() {
-            import('@/assets/meta/sections')
-            .then(data => data.default.find(s => s.id === this.sectionId))
-            .then(section => {
-                this.whoAmI = section.whoAmI
-                this.tldr = section.tldr
-                this.heroSrc = section.heroSrc
-            })
-        }
-    },
-    created() {
-        this.fetchSectionData()
+    mounted() {
+        this.whoAmI = this.section?.whoAmI ?? ''
+        this.tldr = this.section?.tldr ?? ''
+        this.heroSrc = this.section?.heroSrc ?? ''
     }
 }
 </script>
