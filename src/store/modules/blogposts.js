@@ -60,6 +60,8 @@ export default {
                         ...newPost
                     })
                     resolve(docRef.id)
+                }).catch(err => {
+                    console.error(err)
                 })
             })
         },
