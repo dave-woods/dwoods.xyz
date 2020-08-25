@@ -3,7 +3,7 @@ import Vuex from 'vuex'
 
 import { auth, provider } from '@/firebase'
 
-import PostsModule from './modules/blogposts'
+import PostsModule from './modules/posts'
 import SectionsModule from './modules/sections'
 
 Vue.use(Vuex)
