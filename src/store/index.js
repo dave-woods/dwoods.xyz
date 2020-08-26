@@ -10,30 +10,47 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    user: {}
+    user: {},
+    drawer: false
   },
   mutations: {
     setUser(state, user) {
       state.user = user
+    },
+    setDrawer(state, open) {
+      state.drawer = open
     }
   },
   actions: {
-    async login(context) {
-      auth.signInWithPopup(provider).then(result => {
-        context.dispatch('setUser', result.user)
-      })
-      .catch(err => {
-        if (err.code !== 'auth/popup-closed-by-user') console.error(err.message)
+    login(context) {
+      return new Promise((resolve, reject) => {
+        auth.signInWithPopup(provider).then(result => {
+          context.dispatch('setUser', result.user)
+          resolve()
+        })
+        .catch(err => {
+          if (err.code !== 'auth/popup-closed-by-user') reject(err)
+        })
       })
     },
-    async logout({ commit }) {
-      await auth.signOut()
-      commit('setUser', {})
+    logout({ commit }) {
+      return new Promise((resolve, reject) => {
+        auth.signOut().then(() => {
+          commit('setUser', {})
+          resolve()
+        })
+        .catch(err => {
+          reject(err)
+        })
+      })
     },
     setUser({ commit }, user) {
       let isAdmin = user.uid === 'oGt1gEXpKohT1cNo2JyAQ7JqcBy1'
       let { displayName, email, photoURL, uid } = user
       commit('setUser', {uid, displayName, email, photoURL, isAdmin})
+    },
+    setDrawer({ commit }, open) {
+      commit('setDrawer', open)
     }
   },
   modules: {

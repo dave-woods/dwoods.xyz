@@ -39,6 +39,9 @@
 .monospace {
     font-family: monospace;
 }
+.container {
+    padding: 12px !important;
+}
 </style>
 
 <script>

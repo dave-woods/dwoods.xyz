@@ -14,7 +14,7 @@
                 <v-btn v-if="user.isAdmin" icon @click="deletePost"><v-icon>mdi-delete</v-icon></v-btn>
             </div>
         </div>
-        <div class="my-2 d-flex justify-space-between" >
+        <div class="my-2 d-flex justify-space-between" :class="$vuetify.breakpoint.name === 'xs' ? 'mx-2' : ''">
             <div style="min-width: 50%" v-show="niceDate">Posted on {{ niceDate }}</div>
             <div v-if="tags && tags.length > 0" class="text-right">
                 <v-chip

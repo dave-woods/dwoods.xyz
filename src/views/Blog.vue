@@ -1,26 +1,24 @@
 <template>
-    <div>
-        <v-container>
-            <v-row>
-                <v-col>
-                    <blog-post v-if="postSlug" :postSlug="postSlug"></blog-post>
-                    <post-list v-else :postsList="drafts ? draftsList : postsList" :drafts="drafts" :loading="loading"></post-list>
-                    <div v-if="!postSlug && user.isAdmin" style="position: relative; margin-top: 64px;">
-                        <v-btn v-if="draftsList.length > 0 && !drafts" absolute left bottom key="drafts-button" to="/read?drafts=true">Drafts</v-btn>
-                        <v-btn absolute right bottom key="new-post-button" to="/write">New</v-btn>
-                    </div>
-                </v-col>
-                <!-- <v-col v-if="!tag" cols="12" sm="6">
-                    <twitter-feed url="dwoodscs"  height="600"></twitter-feed>
-                </v-col> -->
-            </v-row>
-            <v-row v-if="postSlug || tag || drafts">
-                <v-col class="text-center">
-                    <v-btn key="see-all-posts-button" to="/read">See all posts</v-btn>
-                </v-col>
-            </v-row>
-        </v-container>
-    </div>
+    <v-container>
+        <v-row no-gutters>
+            <v-col>
+                <blog-post v-if="postSlug" :postSlug="postSlug"></blog-post>
+                <post-list v-else :postsList="drafts ? draftsList : postsList" :drafts="drafts" :loading="loading"></post-list>
+                <div v-if="!postSlug && user.isAdmin" style="position: relative; margin-top: 64px;">
+                    <v-btn v-if="draftsList.length > 0 && !drafts" absolute left bottom key="drafts-button" to="/read?drafts=true">Drafts</v-btn>
+                    <v-btn absolute right bottom key="new-post-button" to="/write">New</v-btn>
+                </div>
+            </v-col>
+            <!-- <v-col v-if="!tag" cols="12" sm="6">
+                <twitter-feed url="dwoodscs"  height="600"></twitter-feed>
+            </v-col> -->
+        </v-row>
+        <v-row v-if="postSlug || tag || drafts" :class="$vuetify.breakpoint.name === 'xs' ? 'mb-2' : ''">
+            <v-col class="text-center">
+                <v-btn key="see-all-posts-button" to="/read">See all posts</v-btn>
+            </v-col>
+        </v-row>
+    </v-container>
 </template>
 
 <style scoped>
