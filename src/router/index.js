@@ -16,6 +16,10 @@ const routes = [
     component: Home
   },
   {
+    path: '/test',
+    component: () => import('@/views/Test.vue')
+  },
+  {
     path: '/write/:id?',
     name: 'write',
     props: true,
