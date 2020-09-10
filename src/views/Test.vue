@@ -18,6 +18,10 @@
 </div>
 </template>
 
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@900&family=Roboto:wght@400;700&display=swap');
+</style>
+
 <style lang="scss">
 body {
     overflow: hidden !important;
@@ -57,7 +61,7 @@ h1, h2 {
     align-self: center;
 }
 h1 {
-    font-family: 'Roboto Slab';
+    font-family: 'Roboto Slab', serif;
     font-weight: 900;
     font-size: 4em;
     grid-area: head1;
@@ -69,7 +73,7 @@ h2 {
     width: max-content;
     span {
         display: inline-block;
-        font-weight: 600;
+        font-weight: 700;
         color: #606F82FF;
     }
 }
