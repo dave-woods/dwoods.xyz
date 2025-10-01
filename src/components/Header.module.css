@@ -4,10 +4,11 @@
     flex-direction: row;
     justify-content: space-between;
     padding-block: 1rem;
-    padding-inline: 0.5rem;;
+    padding-inline: 0.5rem;
+    font-family: var(--merriweather-sans);
 }
 .logo {
-    color: var(--accent);
+    /* color: var(--accent); */
     font-weight: 700;
 }
 .nav {
