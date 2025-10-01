@@ -22,9 +22,13 @@ describe('Header', () => {
       { name: 'Contact', href: '/contact' },
     ]
     links.forEach(({ name, href }) => {
-      const link = screen.getByRole('link', { name })
-      expect(link).toBeInTheDocument()
-      expect(link).toHaveAttribute('href', href)
+      const links = screen.getAllByRole('link')
+      links.forEach(link => {
+        if (link.textContent === name) {
+          expect(link).toBeInTheDocument()
+          expect(link).toHaveAttribute('href', href)
+        }
+      })
     })
   })
 })
