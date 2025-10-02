@@ -1,5 +1,5 @@
 .header {
-    background-color: var(--dark);
+    /* background-color: var(--dark); */
     display: flex;
     flex-direction: row;
     justify-content: space-between;
