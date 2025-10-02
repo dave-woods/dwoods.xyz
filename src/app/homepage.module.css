@@ -24,6 +24,31 @@
   color: var(--light);
 }
 
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 24px;
+  width: 100%;
+  max-width: 1200px;
+  padding: 0 16px;
+}
+
+
+
+.buttonRow {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.buttonRow > button {
+  flex: 1 1 0;
+  min-width: max-content;
+  white-space: nowrap;
+}
+
 /* .page {
   --gray-rgb: 0, 0, 0;
   --gray-alpha-200: rgba(var(--gray-rgb), 0.08);

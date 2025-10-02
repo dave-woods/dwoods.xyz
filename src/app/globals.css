@@ -1,22 +1,24 @@
 :root {
-  --darkest: #041F1E;
-  --dark: #1E2D2F;
+  --bg-dark: oklch(.23 0.02 206);
+  --bg: oklch(.28 0.02 206);
+  --bg-light: oklch(.33 0.02 206);
 
-  --lightest: #EDEDED;
-  --light: #C4C4C4;
+  --fg-dark: oklch(.72 0 271);
+  --fg: oklch(.82 0 271);
+  --fg-light: oklch(.92 0 271);
 
-  --accent: #F6511D;
+  --accent-dark: oklch(.61 0.21 36);
+  --accent: oklch(.66 0.21 36);
+  --accent-light: oklch(.71 0.21 36);
 
-
-
-  --background: var(--lightest);
-  --foreground: var(--dark);
+  --background: var(--bg-dark);
+  --foreground: var(--fg);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: var(--darkest);
-    --foreground: var(--light);
+    --background: var(--bg-dark);
+    --foreground: var(--fg);
   }
 }
 
@@ -32,6 +34,11 @@ body {
   font-family: var(--merriweather) Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  height: 100dvh;
 }
 
 * {
@@ -49,4 +56,9 @@ a {
   html {
     color-scheme: dark;
   }
+}
+
+main {
+  padding-inline: 2rem;
+  flex: 1 1 auto;
 }
