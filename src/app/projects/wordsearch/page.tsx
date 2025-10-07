@@ -6,23 +6,25 @@ import styles from './wordsearch.module.css'
 import Button from '@/components/Button'
 
 export default function Wordsearch() {
-  const wordlist = [
-    // 'example',
-    // 'goes',
-    // 'here',
-    // 'test',
+  const shortwords = ['wordsearch', 'javascript', 'trampoline']
+  const longwords = [
+    'example',
+    'goes',
+    'here',
+    'test',
     'wordsearch',
-    // 'puzzle',
-    // 'nextjs',
-    // 'react',
+    'puzzle',
+    'nextjs',
+    'react',
     'typescript',
-    'javascript'
-    // 'css',
-    // 'html',
-    // 'frontend',
-    // 'backend',
-    // 'fullstack'
+    'javascript',
+    'css',
+    'html',
+    'frontend',
+    'backend',
+    'fullstack'
   ]
+  const wordlist = shortwords
   const gridSize = 15
 
   const [found, setFound] = useState<string[]>([])
