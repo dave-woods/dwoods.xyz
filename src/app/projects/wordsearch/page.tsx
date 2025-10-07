@@ -1,56 +1,89 @@
-"use client";
+'use client'
 
-import { useState } from "react";
-import { WordsearchGrid } from "./_wordsearch";
-import styles from "./wordsearch.module.css";
+import { useState } from 'react'
+import { WordsearchGrid } from './_wordsearch'
+import styles from './wordsearch.module.css'
+import Button from '@/components/Button'
 
 export default function Wordsearch() {
   const wordlist = [
-    "example",
-    "goes",
-    "here",
-    "test",
-    "wordsearch",
-    "puzzle",
-    "nextjs",
-    "react",
-    "typescript",
-    "javascript",
-    "css",
-    "html",
-    "frontend",
-    "backend",
-    "fullstack",
-  ];
-  const [found, setFound] = useState<string[]>([]);
-  const gridSize = 15;
+    // 'example',
+    // 'goes',
+    // 'here',
+    // 'test',
+    'wordsearch',
+    // 'puzzle',
+    // 'nextjs',
+    // 'react',
+    'typescript',
+    'javascript'
+    // 'css',
+    // 'html',
+    // 'frontend',
+    // 'backend',
+    // 'fullstack'
+  ]
+  const gridSize = 15
+
+  const [found, setFound] = useState<string[]>([])
+  const [gameFinished, setGameFinished] = useState(false)
 
   function handleWordFind(word: string) {
     if (wordlist.includes(word) && !found.includes(word)) {
-      setFound((prev) => [...prev, word]);
+      setFound((prev) => [...prev, word])
+      if (found.length + 1 === wordlist.length) {
+        finishGame()
+      }
+      return true
     }
+    return false
+  }
+
+  function finishGame() {
+    setGameFinished(true)
+  }
+
+  function reset() {
+    setFound([])
+    setGameFinished(false)
   }
 
   return (
     <main className={styles.main}>
       <h1>Wordsearch</h1>
-      <ul className={styles.wordlist}>
-        {wordlist.map((word) => (
-          <li
-            key={word}
-            className={`${styles.word} ${
-              found.includes(word) ? styles.found : ""
-            }`}
+      {gameFinished ? (
+        <div className={styles.congratulations}>
+          <h2>Congratulations! You found all the words!</h2>
+          <Button
+            level={1}
+            onClick={() => {
+              setFound([])
+              setGameFinished(false)
+            }}
           >
-            {word}
-          </li>
-        ))}
-      </ul>
+            Play Again
+          </Button>
+        </div>
+      ) : (
+        <ul className={styles.wordlist}>
+          {wordlist.map((word) => (
+            <li
+              key={word}
+              className={`${styles.word} ${
+                found.includes(word) ? styles.found : ''
+              }`}
+            >
+              {word}
+            </li>
+          ))}
+        </ul>
+      )}
       <WordsearchGrid
         onWordFind={handleWordFind}
         gridSize={gridSize}
         wordlist={wordlist}
+        foundWords={found}
       />
     </main>
-  );
+  )
 }

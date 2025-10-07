@@ -22,11 +22,17 @@
     list-style: none;
 }
 
+.congratulations {
+    /* grid-column: 1 / -1; */
+    text-align: center;
+    /* color: var(--accent); */
+}
+
 .word {
     font-weight: 200;
 }
 
-.found {
+.word.found {
     text-decoration: line-through;
     text-decoration-color: var(--accent);
     text-decoration-thickness: 4px;
@@ -40,6 +46,10 @@
     width: max-content;
     grid-auto-rows: 1fr;
     border-radius: 3px;
+    cursor: grab;
+    &.selecting {
+        cursor: pointer;
+    }
 }
 
 .cell {
@@ -49,8 +59,15 @@
     align-items: center;
     aspect-ratio: 1 / 1;
     user-select: none;
-
-    &:active {
-        cursor: grabbing;
-    }
+}
+.cell.found {
+    background-color: green;
+}
+.cell:hover {
+    background-color: cornflowerblue;
+    /* border-radius: 3px; */
+}
+.cell.selected {
+    background-color: var(--accent);
+    border-radius: 0;
 }
