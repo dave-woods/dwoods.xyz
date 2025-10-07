@@ -9,9 +9,9 @@ export default function Projects() {
             <h1>Projects</h1>
             <p>This is the projects page.</p>
             <Card>
-                <h3>Project Card Example</h3>
-                <p>This is an example of a project card.</p>
-                <Button href="/projects/example" level={2}>Learn More</Button>
+                <h3>Wordsearch</h3>
+                <p>Here's a basic wordsearch generator</p>
+                <Button href="/projects/wordsearch" level={2}>Wordsearch</Button>
             </Card>
             <Card>
                 <h3>Project Card Example</h3>
