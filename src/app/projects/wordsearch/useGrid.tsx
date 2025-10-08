@@ -30,15 +30,17 @@ function placeWord(grid: string[][], word: string) {
   while (!placed && attempts < maxAttempts) {
     attempts++
 
+    const wordToPlace =
+      Math.random() < 0.33 ? word.split('').toReversed().join('') : word
     const direction = Math.random() < 0.5 ? 'H' : 'V'
     const row = Math.floor(Math.random() * grid.length)
     const col = Math.floor(Math.random() * grid.length)
-    if (canPlaceWord(grid, word, row, col, direction)) {
-      for (let i = 0; i < word.length; i++) {
+    if (canPlaceWord(grid, wordToPlace, row, col, direction)) {
+      for (let i = 0; i < wordToPlace.length; i++) {
         if (direction === 'H') {
-          grid[row][col + i] = word[i]
+          grid[row][col + i] = wordToPlace[i]
         } else {
-          grid[row + i][col] = word[i]
+          grid[row + i][col] = wordToPlace[i]
         }
       }
       placed = true
