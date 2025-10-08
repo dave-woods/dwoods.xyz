@@ -21,12 +21,6 @@ export default function WordsearchGrid({
   setShouldRegenerate: (value: boolean) => void
   onWordFind: (word: string) => boolean
 }) {
-  console.log(
-    'WordsearchGrid rendered with gridSize:',
-    gridSize,
-    'and wordlist:',
-    wordlist
-  )
   const { grid, regenerateGrid } = useGrid(gridSize, wordlist)
 
   const [selectedLetters, setSelectedLetters] = useState<string[]>([])
@@ -39,7 +33,6 @@ export default function WordsearchGrid({
     cell: Cell,
     letter: string = ''
   ) {
-    // console.log('Drag start:', letter)
     setSelectedCells([cell])
     setSelectedLetters([letter])
   }

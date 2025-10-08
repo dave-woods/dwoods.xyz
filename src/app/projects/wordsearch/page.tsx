@@ -31,7 +31,6 @@ import styles from './wordsearch.module.css'
 import Button from '@/components/Button'
 
 export default function Wordsearch() {
-  console.log('Wordsearch page rendered')
   const shortwords = ['wordsearch', 'javascript', 'trampoline']
   const wordlist = [
     'example',
