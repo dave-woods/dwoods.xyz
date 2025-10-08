@@ -43,7 +43,7 @@
   flex-wrap: wrap;
 }
 
-.buttonRow > button {
+.buttonRow > button, .buttonRow > a {
   flex: 1 1 0;
   min-width: max-content;
   white-space: nowrap;
