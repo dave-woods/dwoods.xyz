@@ -32,8 +32,8 @@ import Button from '@/components/Button'
 
 export default function Wordsearch() {
   console.log('Wordsearch page rendered')
-  const wordlist = ['wordsearch', 'javascript', 'trampoline']
-  const longwords = [
+  const shortwords = ['wordsearch', 'javascript', 'trampoline']
+  const wordlist = [
     'example',
     'goes',
     'here',
