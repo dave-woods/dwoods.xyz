@@ -60,6 +60,9 @@
     aspect-ratio: 1 / 1;
     user-select: none;
 }
+.cell.default {
+    background-color: transparent;
+}
 .cell.found {
     background-color: green;
 }

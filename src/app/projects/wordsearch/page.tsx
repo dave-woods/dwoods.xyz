@@ -1,12 +1,38 @@
 'use client'
 
 import { useState } from 'react'
-import { WordsearchGrid } from './_wordsearch'
+// import WordsearchGrid from './WordsearchGrid'
+import dynamic from 'next/dynamic'
+const WordsearchGrid = dynamic(() => import('./WordsearchGrid'), {
+  ssr: false,
+  loading: () => (
+    <div
+      style={{ gridTemplateColumns: `repeat(${15}, 1fr)` }}
+      className={styles.grid}
+    >
+      {Array.from({ length: 15 }, () =>
+        Array.from({ length: 15 }, () => '?')
+      ).map((gridRow, rowIdx) =>
+        gridRow.map((dummy, dummyIdx) => (
+          <div
+            style={{ color: 'transparent' }}
+            key={`dummy-${rowIdx}-${dummyIdx}`}
+            className={styles.cell}
+          >
+            {dummy}
+          </div>
+        ))
+      )}
+    </div>
+  )
+})
+
 import styles from './wordsearch.module.css'
 import Button from '@/components/Button'
 
 export default function Wordsearch() {
-  const shortwords = ['wordsearch', 'javascript', 'trampoline']
+  console.log('Wordsearch page rendered')
+  const wordlist = ['wordsearch', 'javascript', 'trampoline']
   const longwords = [
     'example',
     'goes',
@@ -24,11 +50,11 @@ export default function Wordsearch() {
     'backend',
     'fullstack'
   ]
-  const wordlist = shortwords
   const gridSize = 15
 
   const [found, setFound] = useState<string[]>([])
   const [gameFinished, setGameFinished] = useState(false)
+  const [shouldRegenerate, setShouldRegenerate] = useState(false)
 
   function handleWordFind(word: string) {
     if (wordlist.includes(word) && !found.includes(word)) {
@@ -48,6 +74,7 @@ export default function Wordsearch() {
   function reset() {
     setFound([])
     setGameFinished(false)
+    setShouldRegenerate(true)
   }
 
   return (
@@ -56,13 +83,7 @@ export default function Wordsearch() {
       {gameFinished ? (
         <div className={styles.congratulations}>
           <h2>Congratulations! You found all the words!</h2>
-          <Button
-            level={1}
-            onClick={() => {
-              setFound([])
-              setGameFinished(false)
-            }}
-          >
+          <Button level={1} onClick={reset}>
             Play Again
           </Button>
         </div>
@@ -84,7 +105,8 @@ export default function Wordsearch() {
         onWordFind={handleWordFind}
         gridSize={gridSize}
         wordlist={wordlist}
-        foundWords={found}
+        shouldRegenerate={shouldRegenerate}
+        setShouldRegenerate={setShouldRegenerate}
       />
     </main>
   )
