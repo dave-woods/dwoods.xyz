@@ -61,13 +61,11 @@ function fillRemainingCells(grid: string[][]) {
 }
 
 export function useGrid(size: number, wordlist: string[]) {
-  console.log('useGrid called with size:', size, 'and wordlist:', wordlist)
   const generateGrid = useCallback(() => {
     const newGrid = Array.from({ length: size }, () =>
       Array.from({ length: size }, () => '?')
     )
     for (const word of wordlist.toSorted((a, b) => b.length - a.length)) {
-      console.log('Placing word:', word)
       placeWord(newGrid, word)
     }
     fillRemainingCells(newGrid)
