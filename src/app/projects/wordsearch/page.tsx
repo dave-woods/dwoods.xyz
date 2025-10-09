@@ -1,38 +1,83 @@
-'use client'
+'use server'
 
-import { useState } from 'react'
-// import WordsearchGrid from './WordsearchGrid'
-import dynamic from 'next/dynamic'
-const WordsearchGrid = dynamic(() => import('./WordsearchGrid'), {
-  ssr: false,
-  loading: () => (
-    <div
-      style={{ gridTemplateColumns: `repeat(${15}, 1fr)` }}
-      className={styles.grid}
-    >
-      {Array.from({ length: 15 }, () =>
-        Array.from({ length: 15 }, () => '?')
-      ).map((gridRow, rowIdx) =>
-        gridRow.map((dummy, dummyIdx) => (
-          <div
-            style={{ color: 'transparent' }}
-            key={`dummy-${rowIdx}-${dummyIdx}`}
-            className={styles.cell}
-          >
-            {dummy}
-          </div>
-        ))
-      )}
-    </div>
+import Wordsearch from './Wordsearch'
+
+const fillRemainingCells = (grid: string[][]) => {
+  const letters = 'abcdefghijklmnopqrstuvwxyz'
+  for (let r = 0; r < grid.length; r++) {
+    for (let c = 0; c < grid.length; c++) {
+      if (grid[r][c] === '?') {
+        grid[r][c] = letters[Math.floor(Math.random() * letters.length)]
+      }
+    }
+  }
+  return grid
+}
+
+function canPlaceWord(
+  grid: string[][],
+  word: string,
+  row: number,
+  col: number,
+  direction: 'H' | 'V'
+) {
+  if (direction === 'H') {
+    if (col + word.length > grid.length) return false
+    for (let i = 0; i < word.length; i++) {
+      if (grid[row][col + i] !== '?' && grid[row][col + i] !== word[i])
+        return false
+    }
+  } else {
+    if (row + word.length > grid.length) return false
+    for (let i = 0; i < word.length; i++) {
+      if (grid[row + i][col] !== '?' && grid[row + i][col] !== word[i])
+        return false
+    }
+  }
+  return true
+}
+
+function placeWord(grid: string[][], word: string) {
+  let placed = false
+  const maxAttempts = grid.length * grid.length
+  let attempts = 0
+  while (!placed && attempts < maxAttempts) {
+    attempts++
+
+    const wordToPlace =
+      Math.random() < 0.33 ? word.split('').toReversed().join('') : word
+    const direction = Math.random() < 0.5 ? 'H' : 'V'
+    const row = Math.floor(Math.random() * grid.length)
+    const col = Math.floor(Math.random() * grid.length)
+    if (canPlaceWord(grid, wordToPlace, row, col, direction)) {
+      for (let i = 0; i < wordToPlace.length; i++) {
+        if (direction === 'H') {
+          grid[row][col + i] = wordToPlace[i]
+        } else {
+          grid[row + i][col] = wordToPlace[i]
+        }
+      }
+      placed = true
+    }
+  }
+  return placed
+}
+
+async function generateGrid(wordlist: string[], size: number) {
+  'use server'
+  const newGrid = Array.from({ length: size }, () =>
+    Array.from({ length: size }, () => '?')
   )
-})
+  for (const word of wordlist.toSorted((a, b) => b.length - a.length)) {
+    placeWord(newGrid, word)
+  }
+  fillRemainingCells(newGrid)
+  return newGrid
+}
 
-import styles from './wordsearch.module.css'
-import Button from '@/components/Button'
-
-export default function Wordsearch() {
-  const shortwords = ['wordsearch', 'javascript', 'trampoline']
-  const wordlist = [
+export default async function WordsearchPage() {
+  const quickTest = ['wordsearch', 'typescript', 'javascript']
+  const longTest = [
     'example',
     'goes',
     'here',
@@ -49,64 +94,15 @@ export default function Wordsearch() {
     'backend',
     'fullstack'
   ]
-  const gridSize = 15
-
-  const [found, setFound] = useState<string[]>([])
-  const [gameFinished, setGameFinished] = useState(false)
-  const [shouldRegenerate, setShouldRegenerate] = useState(false)
-
-  function handleWordFind(word: string) {
-    if (wordlist.includes(word) && !found.includes(word)) {
-      setFound((prev) => [...prev, word])
-      if (found.length + 1 === wordlist.length) {
-        finishGame()
-      }
-      return true
-    }
-    return false
-  }
-
-  function finishGame() {
-    setGameFinished(true)
-  }
-
-  function reset() {
-    setFound([])
-    setGameFinished(false)
-    setShouldRegenerate(true)
-  }
+  const initialWordlist = [...longTest]
+  const initialGridSize = 15
+  const initialGrid = await generateGrid(initialWordlist, initialGridSize)
 
   return (
-    <main className={styles.main}>
-      <h1>Wordsearch</h1>
-      {gameFinished ? (
-        <div className={styles.congratulations}>
-          <h2>Congratulations! You found all the words!</h2>
-          <Button level={1} onClick={reset}>
-            Play Again
-          </Button>
-        </div>
-      ) : (
-        <ul className={styles.wordlist}>
-          {wordlist.map((word) => (
-            <li
-              key={word}
-              className={`${styles.word} ${
-                found.includes(word) ? styles.found : ''
-              }`}
-            >
-              {word}
-            </li>
-          ))}
-        </ul>
-      )}
-      <WordsearchGrid
-        onWordFind={handleWordFind}
-        gridSize={gridSize}
-        wordlist={wordlist}
-        shouldRegenerate={shouldRegenerate}
-        setShouldRegenerate={setShouldRegenerate}
-      />
-    </main>
+    <Wordsearch
+      initialGrid={initialGrid}
+      initialWordlist={initialWordlist}
+      regenerate={generateGrid}
+    />
   )
 }

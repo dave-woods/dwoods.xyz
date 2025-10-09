@@ -3,7 +3,6 @@ import styles from './wordsearch.module.css'
 import { WordsearchCellProps } from './types'
 
 export function WordsearchCell({
-  children,
   cell,
   cellState = 'default',
   handleWordSelectStart,
@@ -13,14 +12,12 @@ export function WordsearchCell({
   return (
     <div
       draggable={false}
-      onMouseDown={(e) => handleWordSelectStart(e, cell, children?.toString())}
-      onMouseEnter={(e) =>
-        handleWordSelectContinue(e, cell, children?.toString())
-      }
+      onMouseDown={() => handleWordSelectStart(cell)}
+      onMouseEnter={() => handleWordSelectContinue(cell)}
       onMouseUp={handleWordSelectEnd}
       className={`${styles.cell} ${styles[cellState]}`}
     >
-      {children}
+      {cell.letter}
     </div>
   )
 }
