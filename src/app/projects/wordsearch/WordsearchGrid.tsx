@@ -17,7 +17,7 @@ export default function WordsearchGrid({
 
   // onmousedown
   function handleWordSelectStart(cell: Cell) {
-    setSelectedCells([cell])
+    if (!selectedCells.length) setSelectedCells([cell])
   }
 
   // onmouseenter
