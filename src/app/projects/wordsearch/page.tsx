@@ -19,17 +19,32 @@ function canPlaceWord(
   word: string,
   row: number,
   col: number,
-  direction: 'H' | 'V'
+  direction: 'H' | 'V',
+  diagonal: boolean
 ) {
   if (direction === 'H') {
     if (col + word.length > grid.length) return false
+    if (diagonal && row + word.length > grid.length) return false
     for (let i = 0; i < word.length; i++) {
+      if (
+        diagonal &&
+        grid[row + i][col + i] !== '?' &&
+        grid[row + i][col + i] !== word[i]
+      )
+        return false
       if (grid[row][col + i] !== '?' && grid[row][col + i] !== word[i])
         return false
     }
   } else {
     if (row + word.length > grid.length) return false
+    if (diagonal && col - word.length < 0) return false
     for (let i = 0; i < word.length; i++) {
+      if (
+        diagonal &&
+        grid[row + i][col - i] !== '?' &&
+        grid[row + i][col - i] !== word[i]
+      )
+        return false
       if (grid[row + i][col] !== '?' && grid[row + i][col] !== word[i])
         return false
     }
@@ -47,14 +62,31 @@ function placeWord(grid: string[][], word: string) {
     const wordToPlace =
       Math.random() < 0.33 ? word.split('').toReversed().join('') : word
     const direction = Math.random() < 0.5 ? 'H' : 'V'
-    const row = Math.floor(Math.random() * grid.length)
-    const col = Math.floor(Math.random() * grid.length)
-    if (canPlaceWord(grid, wordToPlace, row, col, direction)) {
+    const diagonal = Math.random() < 0.5
+    const row = Math.floor(
+      Math.random() *
+        (grid.length - (direction === 'V' ? wordToPlace.length : 0))
+    )
+    const col = Math.floor(
+      Math.random() *
+        (grid.length - (direction === 'H' ? wordToPlace.length : 0))
+    )
+    if (canPlaceWord(grid, wordToPlace, row, col, direction, diagonal)) {
       for (let i = 0; i < wordToPlace.length; i++) {
         if (direction === 'H') {
-          grid[row][col + i] = wordToPlace[i]
+          if (diagonal) {
+            // diagonal H -> \
+            grid[row + i][col + i] = wordToPlace[i]
+          } else {
+            grid[row][col + i] = wordToPlace[i]
+          }
         } else {
-          grid[row + i][col] = wordToPlace[i]
+          if (diagonal) {
+            // diagonal V -> /
+            grid[row + i][col - i] = wordToPlace[i]
+          } else {
+            grid[row + i][col] = wordToPlace[i]
+          }
         }
       }
       placed = true

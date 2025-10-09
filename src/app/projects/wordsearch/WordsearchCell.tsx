@@ -13,11 +13,18 @@ export function WordsearchCell({
     <div
       draggable={false}
       onMouseDown={() => handleWordSelectStart(cell)}
-      onMouseEnter={() => handleWordSelectContinue(cell)}
       onMouseUp={handleWordSelectEnd}
       className={`${styles.cell} ${styles[cellState]}`}
     >
-      {cell.letter}
+      <span
+        style={{
+          minWidth: '70%',
+          textAlign: 'center'
+        }}
+        onMouseEnter={() => handleWordSelectContinue(cell)}
+      >
+        {cell.letter}
+      </span>
     </div>
   )
 }
