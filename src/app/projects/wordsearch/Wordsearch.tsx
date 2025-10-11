@@ -18,6 +18,7 @@ export default function Wordsearch({
 }) {
   const [wordlist, setWordlist] = useState<string[]>([...initialWordlist])
   const [grid, setGrid] = useState(initialGrid)
+  const [updateable, setUpdateable] = useState(false)
 
   const [found, setFound] = useState<Word[]>([])
   const [gameFinished, setGameFinished] = useState(false)
@@ -42,10 +43,50 @@ export default function Wordsearch({
     })
   }
 
+  async function updateWordlist() {
+    const newWordlist = document
+      .getElementsByTagName('textarea')[0]
+      .value.split(/\s+/)
+    regenerate(newWordlist, grid.length).then((newGrid) => {
+      setFound([])
+      setWordlist(newWordlist)
+      setGrid(newGrid)
+      setGameFinished(false)
+      setUpdateable(false)
+    })
+  }
+
   return (
     <main className={styles.main}>
-      <h1>Wordsearch</h1>
-      {gameFinished ? (
+      <h1>
+        Wordsearch{' '}
+        <label style={{ fontSize: '0.8rem' }}>
+          Update wordlist?{' '}
+          <input
+            type='checkbox'
+            checked={updateable}
+            onChange={(e) => setUpdateable(e.target.checked)}
+          ></input>
+        </label>
+      </h1>
+      {updateable ? (
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center'
+          }}
+        >
+          <textarea
+            style={{ width: '100%', height: '100%' }}
+            name={'wordlist-textarea'}
+            defaultValue={wordlist.join('\n')}
+          ></textarea>
+          <Button onClick={updateWordlist} level={3}>
+            Update
+          </Button>
+        </div>
+      ) : gameFinished ? (
         <div className={styles.congratulations}>
           <h2>Congratulations! You found all the words!</h2>
           <Button level={1} onClick={reset}>
@@ -58,7 +99,11 @@ export default function Wordsearch({
           found={found.map((f) => f.word)}
         />
       )}
-      <WordsearchGrid grid={grid} found={found} onWordFind={handleWordFind} />
+      {updateable ? (
+        ''
+      ) : (
+        <WordsearchGrid grid={grid} found={found} onWordFind={handleWordFind} />
+      )}
     </main>
   )
 }
