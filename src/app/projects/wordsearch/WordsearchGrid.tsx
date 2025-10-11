@@ -5,7 +5,6 @@ import styles from './wordsearch.module.css'
 
 import { WordsearchCell } from './WordsearchCell'
 import { Cell, WordsearchGridProps } from './types'
-import { normalise2DVector } from './lib'
 
 export default function WordsearchGrid({
   grid,
@@ -38,29 +37,55 @@ export default function WordsearchGrid({
 
   // onmouseenter
   function handleWordSelectContinue(cell: Cell) {
-    if (!selectedCells.length) return // error, no start cell
-    const homeVector = normalise2DVector([
+    if (!selectedCells.length) return
+
+    const homeVector = [
       cell.row - selectedCells[0].row,
       cell.col - selectedCells[0].col
-    ])
-    const selectedVector = normalise2DVector([
-      cell.row - selectedCells[selectedCells.length - 1].row,
-      cell.col - selectedCells[selectedCells.length - 1].col
-    ])
+    ]
+
+    // Semi-normalize to direction vector (-1, 0, or 1)
+    const direction = [
+      homeVector[0] === 0 ? 0 : homeVector[0] / Math.abs(homeVector[0]),
+      homeVector[1] === 0 ? 0 : homeVector[1] / Math.abs(homeVector[1])
+    ]
+
+    // Only allow straight lines
     if (
-      homeVector[0] !== selectedVector[0] ||
-      homeVector[1] !== selectedVector[1]
+      homeVector[0] !== 0 &&
+      homeVector[1] !== 0 &&
+      Math.abs(homeVector[0]) !== Math.abs(homeVector[1])
     ) {
-      return // not in the same direction as the initial vector
+      return
     }
-    if (
-      Math.abs(cell.col - selectedCells[selectedCells.length - 1].col) > 1 ||
-      Math.abs(cell.row - selectedCells[selectedCells.length - 1].row) > 1
+
+    const lineLength = Math.max(
+      Math.abs(homeVector[0]),
+      Math.abs(homeVector[1])
     )
-      return // within one cell of the last selection
-    if (selectedCells.find((c) => c.row === cell.row && c.col === cell.col))
-      return // already selected
-    setSelectedCells((prev) => [...prev, cell])
+    const newSelection: Cell[] = []
+
+    for (let i = 0; i <= lineLength; i++) {
+      const newRow = selectedCells[0].row + i * direction[0]
+      const newCol = selectedCells[0].col + i * direction[1]
+
+      if (
+        newRow < 0 ||
+        newRow >= grid.length ||
+        newCol < 0 ||
+        newCol >= grid.length
+      ) {
+        continue
+      }
+
+      newSelection.push({
+        row: newRow,
+        col: newCol,
+        letter: grid[newRow][newCol]
+      })
+    }
+
+    setSelectedCells(newSelection)
   }
 
   // onmouseup / onmouseleave

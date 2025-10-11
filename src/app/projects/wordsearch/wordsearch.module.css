@@ -72,22 +72,30 @@
     aspect-ratio: 1 / 1;
     user-select: none;
     z-index: 2;
+    position: relative;
+}
+.cell::before {
+    content: '';
+    position: absolute;
+    inset: -3px;
+}
+.cell > span {
+    display: inline-block;
+    width: 100%;
+    text-align: center;
 }
 .cell.default {
     background-color: transparent;
 }
 .cell.found {
-    /* background-color: green; */
     background-color: transparent;
 }
 .cell:hover {
     background-color: cornflowerblue;
-    /* border-radius: 3px; */
 }
 .selecting .cell {
     background: transparent;
 }
 .cell.selected {
-    /* background-color: var(--accent); */
     border-radius: 0;
 }
