@@ -23,9 +23,13 @@ export default function Wordsearch({
   const [found, setFound] = useState<Word[]>([])
   const [gameFinished, setGameFinished] = useState(false)
 
+  // TODO: each word should have an ID, so if there are multiple of the same word, they can each be tracked individually
   function handleWordFind(cells: Cell[]) {
     const word = cells.map((c) => c.letter).join('')
-    if (wordlist.includes(word) && !found.map((f) => f.word).includes(word)) {
+    if (
+      wordlist.filter((w) => w === word).length >
+      found.filter((f) => f.word === word).length
+    ) {
       setFound((prev) => [...prev, { word, cells }])
       if (found.length + 1 === wordlist.length) {
         setGameFinished(true)
