@@ -47,10 +47,7 @@ export default function Wordsearch({
     })
   }
 
-  async function updateWordlist() {
-    const newWordlist = document
-      .getElementsByTagName('textarea')[0]
-      .value.split(/\s+/)
+  async function updateWordlist(newWordlist: string[]) {
     regenerate(newWordlist, grid.length).then((newGrid) => {
       setFound([])
       setWordlist(newWordlist)
@@ -73,24 +70,7 @@ export default function Wordsearch({
           ></input>
         </label>
       </h1>
-      {updateable ? (
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center'
-          }}
-        >
-          <textarea
-            style={{ width: '100%', height: '100%' }}
-            name={'wordlist-textarea'}
-            defaultValue={wordlist.join('\n')}
-          ></textarea>
-          <Button onClick={updateWordlist} level={3}>
-            Update
-          </Button>
-        </div>
-      ) : gameFinished ? (
+      {gameFinished ? (
         <div className={styles.congratulations}>
           <h2>Congratulations! You found all the words!</h2>
           <Button level={1} onClick={reset}>
@@ -99,6 +79,8 @@ export default function Wordsearch({
         </div>
       ) : (
         <WordsearchWordlist
+          updateable={updateable}
+          updateWordlist={updateWordlist}
           wordlist={wordlist}
           found={found.map((f) => f.word)}
         />
