@@ -3,7 +3,9 @@
 import Button from '@/components/Button'
 import { useState } from 'react'
 import ReceiptUpload from './ReceiptUpload'
-import { accounts, expenses } from './sensitive'
+// import { accounts, expenses } from './sensitive'
+const accounts: any[] = []
+const expenses: any[] = []
 
 export default function Finance() {
   const [loggedIn, setLoggedIn] = useState(false)
