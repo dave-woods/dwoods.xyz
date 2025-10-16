@@ -3,9 +3,10 @@
 import Button from '@/components/Button'
 import { useState } from 'react'
 import ReceiptUpload from './ReceiptUpload'
+import { Expense, FinanceAccount } from './types'
 // import { accounts, expenses } from './sensitive'
-const accounts: any[] = []
-const expenses: any[] = []
+const accounts: FinanceAccount[] = []
+const expenses: Expense[] = []
 
 export default function Finance() {
   const [loggedIn, setLoggedIn] = useState(false)
@@ -95,6 +96,7 @@ export default function Finance() {
           {expenses.slice(0, 9).map((exp) => {
             return (
               <tr
+                key={exp.id}
                 style={{
                   display: 'grid',
                   gridColumn: '1 / -1',
