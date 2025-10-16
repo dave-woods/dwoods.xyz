@@ -1,9 +1,11 @@
 .card {
-    width: clamp(12rem, 30vw, 20rem);
+    /* width: clamp(12rem, 40vw, 20rem); */
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-
+    
+    margin-inline: auto;
+    width: 100%;
     /* color: var(--fg);
     background: var(--bg);
     border-radius: 8px;
@@ -29,13 +31,21 @@
         color: var(--fg-dark);
         font-size: 0.8rem;
     }
+
+    transition: transform 200ms;
 }
 
-.card.highlight {
-    background: rgba(255, 255, 255, 0.06);
+.card:hover {
+    background: rgba(255, 255, 255, 0.08);
     color: var(--fg-light);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.6),
                 inset 0 1px 3px rgba(255, 255, 255, 0.3),
                 inset 0 -1px 2px rgba(0, 0, 0, 0.3);
-    transform: translateY(-10px);
+    transform: translateY(-2px);
+}
+
+@media (width <= 600) {
+    .card.highlight {
+        transform: translateY(0);
+    }
 }
