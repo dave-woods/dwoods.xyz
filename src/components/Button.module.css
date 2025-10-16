@@ -14,7 +14,7 @@
 
 .button.primary {
     background-color: var(--accent);
-    color: var(--fg-light);
+    color: var(--bg-dark);
     border: 2px solid transparent;
     &:hover {
         background-color: var(--accent-light);
@@ -34,4 +34,9 @@
     background-color: var(--fg-dark);
     border: 2px solid transparent;
     color: var(--bg);
+}
+
+.button img {
+    max-height: 1em;
+    margin-inline: 0.2em;
 }

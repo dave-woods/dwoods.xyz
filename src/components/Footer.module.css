@@ -4,5 +4,7 @@
     justify-content: center;
     align-items: center;
     padding: 1rem 0;
-    background-color: lch(from var(--bg-dark) calc(l - 10) c h);
+    background-color: lch(from var(--bg-dark) calc(l - 10) c h / 0.8);
+    font-size: 0.8rem;
+    mix-blend-mode: soft-light;
 }

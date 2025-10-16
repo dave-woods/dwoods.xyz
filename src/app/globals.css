@@ -1,18 +1,21 @@
 :root {
-  --bg-dark: oklch(.23 0.02 206);
   --bg: oklch(.28 0.02 206);
-  --bg-light: oklch(.33 0.02 206);
+  --bg-dark: oklch(from var(--bg) calc(l - .05) c h);
+  --bg-light: oklch(from var(--bg) calc(l + .05) c h);
 
-  --fg-dark: oklch(.72 0 271);
   --fg: oklch(.82 0 271);
-  --fg-light: oklch(.92 0 271);
+  --fg-dark: oklch(from var(--fg) calc(l - .1) c h);
+  --fg-light: oklch(from var(--fg) calc(l + .1) c h);
 
-  --accent-dark: oklch(.61 0.21 36);
-  --accent: oklch(.66 0.21 36);
-  --accent-light: oklch(.71 0.21 36);
+  /* --accent: oklch(.66 0.21 36); */
+  --accent: oklch(0.78 0.17 79.48);
+  --accent-dark: oklch(from var(--accent) calc(l - .05) c h);
+  --accent-light: oklch(from var(--accent) calc(l + .05) c h);
 
   --background: var(--bg-dark);
   --foreground: var(--fg);
+
+  --bg-gradient: linear-gradient(135deg,rgba(29, 44, 46, 1) 0%, rgba(5, 71, 44, 1) 100%);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -30,7 +33,7 @@ body {
 
 body {
   color: var(--foreground);
-  background: var(--background);
+  background: var(--bg-gradient);
   font-family: var(--merriweather) Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
