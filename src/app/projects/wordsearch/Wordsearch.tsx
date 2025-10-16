@@ -64,6 +64,7 @@ export default function Wordsearch({
         <label style={{ fontSize: '0.8rem' }}>
           Update wordlist?{' '}
           <input
+            style={{ accentColor: 'var(--accent)' }}
             type='checkbox'
             checked={updateable}
             onChange={(e) => setUpdateable(e.target.checked)}
