@@ -31,12 +31,12 @@ body {
   height: 100dvh;
   overflow-x: hidden;
   background-color: rgba(5, 71, 44, 1);
-  background: var(--bg-gradient);
-  background-attachment: local;
-  background-size: cover;
 }
 
 body {
+  background: var(--bg-gradient);
+  background-attachment: local;
+  background-size: cover;
   color: var(--foreground);
   font-family: var(--merriweather) Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
