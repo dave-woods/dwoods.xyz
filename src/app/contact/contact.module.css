@@ -1,0 +1,63 @@
+.form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1em;
+    max-width: 600px;
+    margin: auto;
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(12px);
+    padding: 1rem;
+    border-radius: 5px;
+}
+@media (width <= 720) {
+    .form {
+        width: 100%;
+        grid-template-columns: 1fr;
+    }
+}
+.formComponent {
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 0.2em;
+    position: relative;
+
+    & input, & textarea {
+        background: var(--bg);
+        border: none;
+        padding: 0.5em;
+        font-size: 1rem;
+        font-family: inherit;
+        font-weight: 100;
+        resize: none;
+        width: 100%;
+        border-radius: 2px;
+
+        &:focus-visible  {
+            outline: 1px solid var(--accent);
+        }
+        &:not(:placeholder-shown):user-invalid {
+            outline: 1px solid var(--feedback-neg);
+        }
+        &:not(:placeholder-shown):user-valid {
+            outline: 1px solid var(--feedback-pos);
+        }
+    }
+    & textarea {
+        height: 10em;
+    }
+    & label {
+        font-size: 0.8rem;
+        text-box-edge: cap alphabetic;
+        text-box-trim: trim-both;
+    }
+    &:has(input:not(:placeholder-shown):user-invalid)::after {
+        content: "That doesn't look quite right";
+        padding-block: 0.2em;
+        /* color: var(--feedback-neg); */
+        font-family: monospace;
+        font-size: 0.75em;
+        position: absolute;
+        top: 100%;
+        right: 0;
+    }
+}

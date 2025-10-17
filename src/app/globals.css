@@ -16,6 +16,9 @@
   --foreground: var(--fg);
 
   --bg-gradient: linear-gradient(135deg,rgba(29, 44, 46, 1) 0%, rgba(5, 71, 44, 1) 100%);
+
+  --feedback-pos: rgb(38, 173, 146);
+  --feedback-neg: rgb(173, 38, 38);
 }
 
 @media (prefers-color-scheme: dark) {
