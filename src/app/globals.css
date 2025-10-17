@@ -72,3 +72,17 @@ main {
   padding-inline: 2rem;
   flex: 1 1 auto;
 }
+
+.under-construction {
+  position: absolute;
+  top: 50px;
+  left: 50px;
+  width: 140px;
+  font-size: 0.7rem;
+  padding: 1em;
+  border-radius: 5px;
+  background-color: lch(from var(--accent) calc(l - 30) c h);
+  text-align: justify;
+  cursor: pointer;
+  box-shadow: 2px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
