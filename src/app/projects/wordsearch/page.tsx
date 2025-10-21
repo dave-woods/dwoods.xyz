@@ -1,5 +1,6 @@
 'use server'
 
+import { getBaseURL } from '@/utils/lib'
 import Wordsearch from './Wordsearch'
 
 const fillRemainingCells = (grid: string[][]) => {
@@ -107,34 +108,49 @@ async function generateGrid(wordlist: string[], size: number) {
   return newGrid
 }
 
+async function getRandomWords(
+  count: number,
+  minLength: number,
+  maxLength: number
+) {
+  'use server'
+  const res = await fetch(
+    `${getBaseURL()}/api/words?count=${count}&min=${minLength}&max=${maxLength}`
+  )
+  const data = await res.json()
+  return data.words
+}
+
 export default async function WordsearchPage() {
-  const quickTest = ['wordsearch', 'typescript', 'javascript']
-  const longTest = [
+  const fallbackWords = [
     'example',
-    'goes',
-    'here',
-    'test',
+    'fallback',
+    'elements',
+    'testing',
     'wordsearch',
     'puzzle',
-    'nextjs',
+    'creation',
     'react',
     'typescript',
     'javascript',
-    'css',
-    'html',
+    'project',
+    'develop',
     'frontend',
     'backend',
     'fullstack'
   ]
-  const initialWordlist = [...longTest]
+  const initialWordlist = [...(await getRandomWords(15, 4, 10))]
   const initialGridSize = 15
   const initialGrid = await generateGrid(initialWordlist, initialGridSize)
 
   return (
     <Wordsearch
       initialGrid={initialGrid}
-      initialWordlist={initialWordlist}
+      initialWordlist={
+        initialWordlist.length > 0 ? initialWordlist : fallbackWords
+      }
       regenerate={generateGrid}
+      randomWords={getRandomWords}
     />
   )
 }

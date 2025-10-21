@@ -10,11 +10,17 @@ import { Cell, Word } from './types'
 export default function Wordsearch({
   initialGrid,
   initialWordlist,
-  regenerate
+  regenerate,
+  randomWords
 }: {
   initialGrid: string[][]
   initialWordlist: string[]
   regenerate: (wordlist: string[], size: number) => Promise<string[][]>
+  randomWords: (
+    count: number,
+    minLength: number,
+    maxLength: number
+  ) => Promise<string[]>
 }) {
   const [wordlist, setWordlist] = useState<string[]>([...initialWordlist])
   const [grid, setGrid] = useState(initialGrid)
@@ -39,9 +45,15 @@ export default function Wordsearch({
     return false
   }
 
-  async function reset() {
-    regenerate(wordlist, grid.length).then((newGrid) => {
+  async function reset(random = false) {
+    console.log('resetting...', random)
+    console.log('current:', wordlist)
+    const newWordlist = random ? [...(await randomWords(15, 4, 10))] : wordlist
+    console.log('new:', newWordlist)
+
+    regenerate(newWordlist, grid.length).then((newGrid) => {
       setFound([])
+      setWordlist(newWordlist)
       setGrid(newGrid)
       setGameFinished(false)
     })
@@ -62,9 +74,22 @@ export default function Wordsearch({
       <h1>
         <span>Wordsearch</span>{' '}
         <label style={{ fontSize: '0.8rem' }}>
-          Update wordlist?{' '}
+          <span
+            style={{
+              verticalAlign: 'middle',
+              color: gameFinished ? 'var(--fg-dark)' : 'var(--fg)'
+            }}
+          >
+            Customise wordlist?
+          </span>
           <input
-            style={{ accentColor: 'var(--accent)' }}
+            id='customise-wordlist'
+            disabled={gameFinished}
+            style={{
+              accentColor: 'var(--accent)',
+              verticalAlign: 'middle',
+              marginInlineStart: '0.5em'
+            }}
             type='checkbox'
             checked={updateable}
             onChange={(e) => setUpdateable(e.target.checked)}
@@ -74,8 +99,21 @@ export default function Wordsearch({
       {gameFinished ? (
         <div className={styles.congratulations}>
           <h2>Congratulations! You found all the words!</h2>
-          <Button level={1} onClick={reset}>
+          <Button
+            level={2}
+            onClick={() => {
+              reset(false)
+            }}
+          >
             Play Again
+          </Button>
+          <Button
+            level={1}
+            onClick={() => {
+              reset(true)
+            }}
+          >
+            New Words
           </Button>
         </div>
       ) : (
