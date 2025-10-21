@@ -108,6 +108,9 @@ async function generateGrid(wordlist: string[], size: number) {
   return newGrid
 }
 
+import { GET as getWordsAPI } from '@/app/api/words/route'
+import { NextRequest } from 'next/server'
+
 async function getRandomWords(
   count: number,
   minLength: number,
@@ -118,8 +121,11 @@ async function getRandomWords(
     'fetching from:',
     `${getBaseURL()}/api/words?count=${count}&min=${minLength}&max=${maxLength}`
   )
-  const res = await fetch(
-    `${getBaseURL()}/api/words?count=${count}&min=${minLength}&max=${maxLength}`
+  // const res = await fetch(`${getBaseURL()}/api/words?count=${count}&min=${minLength}&max=${maxLength}`)
+  const res = await getWordsAPI(
+    new NextRequest(
+      `${getBaseURL()}/api/words?count=${count}&min=${minLength}&max=${maxLength}`
+    )
   )
   const data = await res.json()
   return data.words
