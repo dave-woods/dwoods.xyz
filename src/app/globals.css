@@ -1,21 +1,25 @@
 :root {
-  --bg: oklch(.28 0.02 206);
-  --bg-dark: oklch(from var(--bg) calc(l - .05) c h);
-  --bg-light: oklch(from var(--bg) calc(l + .05) c h);
+  --bg: oklch(0.28 0.02 206);
+  --bg-dark: oklch(from var(--bg) calc(l - 0.05) c h);
+  --bg-light: oklch(from var(--bg) calc(l + 0.05) c h);
 
-  --fg: oklch(.82 0 271);
-  --fg-dark: oklch(from var(--fg) calc(l - .1) c h);
-  --fg-light: oklch(from var(--fg) calc(l + .1) c h);
+  --fg: oklch(0.82 0 271);
+  --fg-dark: oklch(from var(--fg) calc(l - 0.1) c h);
+  --fg-light: oklch(from var(--fg) calc(l + 0.1) c h);
 
   /* --accent: oklch(.66 0.21 36); */
   --accent: oklch(0.78 0.17 79.48);
-  --accent-dark: oklch(from var(--accent) calc(l - .05) c h);
-  --accent-light: oklch(from var(--accent) calc(l + .05) c h);
+  --accent-dark: oklch(from var(--accent) calc(l - 0.05) c h);
+  --accent-light: oklch(from var(--accent) calc(l + 0.05) c h);
 
   --background: var(--bg-dark);
   --foreground: var(--fg);
 
-  --bg-gradient: linear-gradient(135deg,rgba(29, 44, 46, 1) 0%, rgba(5, 71, 44, 1) 100%);
+  --bg-gradient: linear-gradient(
+    135deg,
+    rgba(29, 44, 46, 1) 0%,
+    rgba(5, 71, 44, 1) 100%
+  );
 
   --feedback-pos: rgb(38, 173, 146);
   --feedback-neg: rgb(173, 38, 38);
@@ -74,6 +78,7 @@ main {
 }
 
 .under-construction {
+  z-index: 100;
   position: absolute;
   top: 50px;
   left: 50px;
@@ -85,4 +90,16 @@ main {
   text-align: justify;
   cursor: pointer;
   box-shadow: 2px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+.under-construction::before {
+  z-index: 100;
+  content: '';
+  display: block;
+  position: absolute;
+  width: 0;
+  height: 0;
+  top: -0.6em;
+  left: 0;
+  border-bottom: 1em solid lch(from var(--accent) calc(l - 30) c h);
+  border-right: 1em solid transparent;
 }
