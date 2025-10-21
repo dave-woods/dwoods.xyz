@@ -1,51 +1,66 @@
 .card {
-    /* width: clamp(12rem, 40vw, 20rem); */
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    
-    margin-inline: auto;
-    width: 100%;
-    /* color: var(--fg);
-    background: var(--bg);
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1),
-                inset 0 1px 3px rgba(255, 255, 255, 0.1),
-                inset 0 -1px 2px rgba(0, 0, 0, 0.1); */
-    
-    /* modern semi-translucent look */
-    background: rgba(255, 255, 255, 0.06);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-    color: var(--fg);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
 
-    padding: 1rem;
+  grid-template-areas:
+    'title title'
+    'text text'
+    'btnL btnR';
 
-    h3 {
-        color: var(--fg-light);
-        margin-bottom: 1rem;
-    }
-    p {
-        color: var(--fg-dark);
-        font-size: 0.8rem;
-    }
+  margin-inline: auto;
+  width: 100%;
+  min-width: 12rem;
 
-    transition: transform 200ms;
+  /* modern semi-translucent look */
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  color: var(--fg);
+  padding: 1rem;
+  transition: transform 200ms;
 }
 
 .card:hover {
-    background: rgba(255, 255, 255, 0.08);
-    color: var(--fg-light);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.6),
-                inset 0 1px 3px rgba(255, 255, 255, 0.3),
-                inset 0 -1px 2px rgba(0, 0, 0, 0.3);
-    transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--fg-light);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.6),
+    inset 0 1px 3px rgba(255, 255, 255, 0.3),
+    inset 0 -1px 2px rgba(0, 0, 0, 0.3);
+  transform: translateY(-2px);
 }
 
 @media (width <= 600) {
-    .card.highlight {
-        transform: translateY(0);
-    }
+  .card.highlight {
+    transform: translateY(0);
+  }
+}
+
+.card-title {
+  color: var(--fg-light);
+  margin-bottom: 1rem;
+  grid-area: title;
+}
+.card-content {
+  color: var(--fg-dark);
+  font-size: 0.8rem;
+  grid-area: text;
+}
+/* TODO: decide if buttons ought to be subgrid or not */
+.buttonRow {
+  grid-area: btnL / btnL / btnR / btnR;
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.buttonRow > button,
+.buttonRow > a {
+  flex: 1 1 0;
+  min-width: max-content;
+  white-space: nowrap;
 }

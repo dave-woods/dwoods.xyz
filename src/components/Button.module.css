@@ -1,42 +1,42 @@
 .button {
-    font: inherit;
-    font-size:0.9rem;
-    border-radius: 4px;
-    padding: 0.5rem 1.5rem;
-    cursor: pointer;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    text-align: center;
+  font: inherit;
+  font-size: 0.9rem;
+  border-radius: 4px;
+  padding-block: 0.5rem;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  text-align: center;
 }
 .button:active {
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-    transform: translateY(1px);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  transform: translateY(1px);
 }
 
 .button.primary {
-    background-color: var(--accent);
-    color: var(--bg-dark);
-    border: 2px solid transparent;
-    &:hover {
-        background-color: var(--accent-light);
-    }
+  background-color: var(--accent);
+  color: var(--bg-dark);
+  border: 2px solid transparent;
+  &:hover {
+    background-color: var(--accent-light);
+  }
 }
 
 .button.secondary {
-    background-color: transparent;
-    border: 2px solid var(--accent);
-    color: var(--accent);
-    &:hover {
-        background-color: rgba(255, 255, 255, 0.05);
-    }
+  background-color: transparent;
+  border: 2px solid var(--accent);
+  color: var(--accent);
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+  }
 }
 
 .button.tertiary {
-    background-color: var(--fg-dark);
-    border: 2px solid transparent;
-    color: var(--bg);
+  background-color: var(--fg-dark);
+  border: 2px solid transparent;
+  color: var(--bg);
 }
 
 .button img {
-    max-height: 1em;
-    margin-inline: 0.2em;
+  max-height: 1em;
+  margin-inline: 0.2em;
 }

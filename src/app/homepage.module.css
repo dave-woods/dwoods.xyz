@@ -33,22 +33,6 @@
   padding: 0 16px;
 }
 
-
-
-.buttonRow {
-  display: flex;
-  flex-direction: row;
-  gap: 1rem;
-  align-items: center;
-  flex-wrap: wrap;
-}
-
-.buttonRow > button, .buttonRow > a {
-  flex: 1 1 0;
-  min-width: max-content;
-  white-space: nowrap;
-}
-
 /* .page {
   --gray-rgb: 0, 0, 0;
   --gray-alpha-200: rgba(var(--gray-rgb), 0.08);

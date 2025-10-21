@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import styles from './Button.module.css'
 
-type ButtonProps = {
+export type ButtonProps = {
   href?: string
   level: 1 | 2 | 3
   children: React.ReactNode
