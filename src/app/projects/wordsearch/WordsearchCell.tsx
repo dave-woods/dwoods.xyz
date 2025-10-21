@@ -12,7 +12,10 @@ export function WordsearchCell({
   return (
     <div
       draggable={false}
-      onPointerDown={() => handleWordSelectStart(cell)}
+      onPointerDown={(e) => {
+        e.currentTarget.releasePointerCapture(e.pointerId)
+        handleWordSelectStart(cell)
+      }}
       onPointerUp={handleWordSelectEnd}
       onPointerEnter={() => handleWordSelectContinue(cell)}
       className={`${styles.cell} ${styles[cellState]}`}
