@@ -1,12 +1,9 @@
-import { NextRequest, NextResponse } from 'next/server'
-export const dynamic = 'force-dynamic'
-
 const WORDS_URL =
   'https://raw.githubusercontent.com/first20hours/google-10000-english/master/20k.txt'
 
 let cachedWords: string[] = []
 
-async function getWordList(): Promise<string[]> {
+export async function getExternalWordList(): Promise<string[]> {
   if (!cachedWords.length) {
     const res = await fetch(WORDS_URL)
     if (!res.ok) {
@@ -25,13 +22,13 @@ async function getWordList(): Promise<string[]> {
   return cachedWords
 }
 
-export async function GET(req: NextRequest) {
-  const { searchParams } = new URL(req.url)
-  const count = parseInt(searchParams.get('count') ?? '10') || 10
-  const minLength = parseInt(searchParams.get('min') ?? '3') || 3
-  const maxLength = parseInt(searchParams.get('max') ?? '15') || 15
-
-  const words = await getWordList()
+export async function getRandomWords(
+  count: number,
+  minLength: number,
+  maxLength: number
+) {
+  'use server'
+  const words = await getExternalWordList()
 
   const filtered = words.filter(
     (w) => w.length >= minLength && w.length <= maxLength
@@ -39,7 +36,5 @@ export async function GET(req: NextRequest) {
 
   // Shuffle & pick
   const shuffled = filtered.sort(() => 0.5 - Math.random())
-  const selected = shuffled.slice(0, count)
-
-  return NextResponse.json({ words: selected })
+  return shuffled.slice(0, count)
 }

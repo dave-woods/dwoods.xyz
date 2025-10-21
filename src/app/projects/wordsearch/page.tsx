@@ -1,7 +1,7 @@
 'use server'
 
-import { getBaseURL } from '@/utils/lib'
 import Wordsearch from './Wordsearch'
+import { getRandomWords } from '@/utils/words'
 
 const fillRemainingCells = (grid: string[][]) => {
   const letters = 'abcdefghijklmnopqrstuvwxyz'
@@ -106,29 +106,6 @@ async function generateGrid(wordlist: string[], size: number) {
   }
   fillRemainingCells(newGrid)
   return newGrid
-}
-
-import { GET as getWordsAPI } from '@/app/api/words/route'
-import { NextRequest } from 'next/server'
-
-async function getRandomWords(
-  count: number,
-  minLength: number,
-  maxLength: number
-) {
-  'use server'
-  console.log(
-    'fetching from:',
-    `${getBaseURL()}/api/words?count=${count}&min=${minLength}&max=${maxLength}`
-  )
-  // const res = await fetch(`${getBaseURL()}/api/words?count=${count}&min=${minLength}&max=${maxLength}`)
-  const res = await getWordsAPI(
-    new NextRequest(
-      `${getBaseURL()}/api/words?count=${count}&min=${minLength}&max=${maxLength}`
-    )
-  )
-  const data = await res.json()
-  return data.words
 }
 
 export default async function WordsearchPage() {

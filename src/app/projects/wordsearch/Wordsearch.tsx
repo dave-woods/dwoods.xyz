@@ -46,10 +46,7 @@ export default function Wordsearch({
   }
 
   async function reset(random = false) {
-    console.log('resetting...', random)
-    console.log('current:', wordlist)
     const newWordlist = random ? [...(await randomWords(15, 4, 10))] : wordlist
-    console.log('new:', newWordlist)
 
     regenerate(newWordlist, grid.length).then((newGrid) => {
       setFound([])
