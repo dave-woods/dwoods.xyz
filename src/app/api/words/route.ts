@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+export const dynamic = 'force-dynamic'
 
 const WORDS_URL =
   'https://raw.githubusercontent.com/first20hours/google-10000-english/master/20k.txt'
