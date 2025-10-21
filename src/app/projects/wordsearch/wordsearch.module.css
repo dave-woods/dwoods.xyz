@@ -1,101 +1,117 @@
 .main {
-    display: grid;
-    grid-template-columns: 1fr 2fr;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
 }
 
 .main h1 {
-    grid-column: 1 / -1;
+  grid-column: 1 / -1;
 }
 
 .wordlist {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    padding: 1rem;
-    background-color: var(--bg);
-    border-radius: 5px;
-    max-height: 350px;
-    overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem;
+  background-color: var(--bg);
+  border-radius: 5px;
+  max-height: 350px;
+  overflow-y: auto;
+  font-size: 0.8rem;
 }
 
 .wordlist li {
-    list-style: none;
+  list-style: none;
 }
 
 .congratulations {
-    /* grid-column: 1 / -1; */
-    text-align: center;
-    /* color: var(--accent); */
+  /* grid-column: 1 / -1; */
+  text-align: center;
+  /* color: var(--accent); */
 }
 
 .word {
-    font-weight: 200;
+  font-weight: 200;
 }
 
 .word.found {
-    text-decoration: line-through;
-    text-decoration-color: var(--accent);
-    text-decoration-thickness: 4px;
+  text-decoration: line-through;
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 4px;
 }
 
 .grid {
-    display: grid;
-    background-color: var(--fg);
-    color: var(--bg);
-    margin-inline: auto;
-    width: max-content;
-    grid-auto-rows: 1fr;
-    border-radius: 3px;
-    cursor: grab;
-    position: relative;
-    
+  display: grid;
+  background-color: var(--fg);
+  color: var(--bg);
+  margin-inline: auto;
+  width: max-content;
+  grid-auto-rows: 1fr;
+  border-radius: 3px;
+  cursor: grab;
+  position: relative;
 
-    &.selecting {
-        cursor: pointer;
-    }
+  &.selecting {
+    cursor: pointer;
+  }
 }
 
 .selection-overlay {
-    position: absolute;
-    inset: 0;
-    height: 100%;
-    width: 100%;
-    pointer-events: none;
-    z-index: 1;
+  position: absolute;
+  inset: 0;
+  height: 100%;
+  width: 100%;
+  pointer-events: none;
+  z-index: 1;
 }
 
 .cell {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    aspect-ratio: 1 / 1;
-    user-select: none;
-    z-index: 2;
-    position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  aspect-ratio: 1 / 1;
+  user-select: none;
+  z-index: 2;
+  position: relative;
 }
 .cell::before {
-    content: '';
-    position: absolute;
-    inset: -3px;
+  content: '';
+  position: absolute;
+  inset: -3px;
 }
 .cell > span {
-    display: inline-block;
-    width: 100%;
-    text-align: center;
+  display: inline-block;
+  width: 100%;
+  text-align: center;
 }
 .cell.default {
-    background-color: transparent;
+  background-color: transparent;
 }
 .cell.found {
-    background-color: transparent;
+  background-color: transparent;
 }
 .cell:hover {
-    background-color: cornflowerblue;
+  background-color: cornflowerblue;
 }
 .selecting .cell {
-    background: transparent;
+  background: transparent;
 }
 .cell.selected {
-    border-radius: 0;
+  border-radius: 0;
+}
+
+@media (width <= 700) {
+  .main {
+    grid-template-columns: 1fr;
+  }
+  .grid {
+    grid-row: 2;
+    font-size: clamp(0.5rem, 4vw, 1rem);
+  }
+  .wordlist {
+    grid-row: 3;
+    width: 100%;
+    max-width: 20rem;
+    margin-inline: auto;
+  }
 }
