@@ -114,6 +114,10 @@ async function getRandomWords(
   maxLength: number
 ) {
   'use server'
+  console.log(
+    'fetching from:',
+    `${getBaseURL()}/api/words?count=${count}&min=${minLength}&max=${maxLength}`
+  )
   const res = await fetch(
     `${getBaseURL()}/api/words?count=${count}&min=${minLength}&max=${maxLength}`
   )
