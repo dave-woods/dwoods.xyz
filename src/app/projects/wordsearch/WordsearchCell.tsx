@@ -1,6 +1,7 @@
 import styles from './wordsearch.module.css'
 
 import { WordsearchCellProps } from './types'
+import { useState } from 'react'
 
 export function WordsearchCell({
   cell,
@@ -9,6 +10,7 @@ export function WordsearchCell({
   handleWordSelectContinue,
   handleWordSelectEnd
 }: WordsearchCellProps) {
+  const [showPopout, setShowPopout] = useState(false)
   return (
     <div
       draggable={false}
@@ -21,11 +23,23 @@ export function WordsearchCell({
         }
         handleWordSelectStart(cell)
       }}
-      onPointerEnter={() => handleWordSelectContinue(cell)}
-      onPointerUp={handleWordSelectEnd}
+      onPointerEnter={(e) => {
+        if (e.pointerType === 'touch') {
+          setShowPopout(true)
+        }
+        handleWordSelectContinue(cell)
+      }}
+      onPointerLeave={(e) => {
+        setShowPopout(false)
+      }}
+      onPointerUp={() => {
+        setShowPopout(false)
+        handleWordSelectEnd()
+      }}
       className={`${styles.cell} ${styles[cellState]}`}
     >
-      <span>{cell.letter}</span>
+      {showPopout && <span className={styles.popout}>{cell.letter}</span>}
+      <span className={styles.content}>{cell.letter}</span>
     </div>
   )
 }
