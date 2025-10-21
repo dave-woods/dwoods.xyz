@@ -60,7 +60,7 @@ export default function Wordsearch({
   return (
     <main className={styles.main}>
       <h1>
-        Wordsearch{' '}
+        <span>Wordsearch</span>{' '}
         <label style={{ fontSize: '0.8rem' }}>
           Update wordlist?{' '}
           <input

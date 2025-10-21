@@ -30,9 +30,33 @@ export default function WordsearchGrid({
 
   const foundCells = found.flatMap((f) => f.cells)
 
+  function straightLineFromFirstCell(cell: Cell) {
+    const homeVector = [
+      cell.row - selectedCells[0].row,
+      cell.col - selectedCells[0].col
+    ]
+
+    // Semi-normalize to direction vector (-1, 0, or 1)
+    const direction = [
+      homeVector[0] === 0 ? 0 : homeVector[0] / Math.abs(homeVector[0]),
+      homeVector[1] === 0 ? 0 : homeVector[1] / Math.abs(homeVector[1])
+    ]
+
+    // Only allow straight lines
+    if (
+      homeVector[0] !== 0 &&
+      homeVector[1] !== 0 &&
+      Math.abs(homeVector[0]) !== Math.abs(homeVector[1])
+    ) {
+      return false
+    }
+    return true
+  }
+
   // onmousedown
   function handleWordSelectStart(cell: Cell) {
-    if (!selectedCells.length) setSelectedCells([cell])
+    if (!selectedCells.length || !straightLineFromFirstCell(cell))
+      setSelectedCells([cell])
   }
 
   // onmouseenter

@@ -1,10 +1,13 @@
 .main {
   display: grid;
+  gap: 1rem;
   grid-template-columns: 1fr 2fr;
 }
 
 .main h1 {
   grid-column: 1 / -1;
+  display: inline-flex;
+  flex-direction: column;
 }
 
 .wordlist {
