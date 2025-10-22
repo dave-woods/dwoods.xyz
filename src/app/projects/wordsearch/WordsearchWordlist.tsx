@@ -1,5 +1,6 @@
 import Button from '@/components/Button'
 import styles from './wordsearch.module.css'
+import { useState } from 'react'
 
 export function WordsearchWordlist({
   updateable,
@@ -12,46 +13,32 @@ export function WordsearchWordlist({
   wordlist: string[]
   found: string[]
 }) {
+  const [textareaContent, setTextareaContent] = useState(wordlist.join('\n'))
   const frequencies = found.reduce<Record<string, number>>((acc, cur) => {
     acc[cur] = acc[cur] ? acc[cur] + 1 : 1
     return acc
   }, {})
 
   return updateable ? (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        gridColumn: '1 / -1',
-        gap: '1rem'
-      }}
-    >
+    <div className={styles['update-words']}>
       <textarea
-        style={{
-          width: '100%',
-          maxWidth: '40vw',
-          minHeight: '250px',
-          height: '100%',
-          background: 'var(--bg)',
-          color: 'var(--fg)',
-          lineHeight: 2,
-          padding: '0.5rem 1rem',
-          fontFamily: 'inherit',
-          fontSize: '1rem',
-          resize: 'none',
-          border: 'none',
-          borderRadius: '5px'
-        }}
         name={'wordlist-textarea'}
-        defaultValue={wordlist.join('\n')}
+        value={textareaContent}
+        onChange={(e) => {
+          e.preventDefault()
+          if (e.target.value.match(/^[a-zA-Z\s]*$/)) {
+            setTextareaContent(e.target.value.toLowerCase())
+          }
+        }}
       ></textarea>
       <Button
         onClick={() => {
-          const newWordlist = document
-            .getElementsByTagName('textarea')[0]
-            .value.split(/\s+/)
-          updateWordlist(newWordlist)
+          const newWordlist = textareaContent
+            .split(/\s+/)
+            .filter((w) => w.length > 1)
+          if (newWordlist.length > 0) {
+            updateWordlist(newWordlist)
+          }
         }}
         level={3}
       >

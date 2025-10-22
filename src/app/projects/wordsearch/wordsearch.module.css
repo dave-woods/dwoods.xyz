@@ -26,6 +26,34 @@
   list-style: none;
 }
 
+.update-words {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  grid-column: 1 / -1;
+  gap: 1rem;
+  width: 100%;
+}
+
+.update-words textarea {
+  width: 100%;
+  min-height: 250px;
+  height: 100%;
+  background: var(--bg);
+  color: var(--fg);
+  line-height: 2;
+  padding: 0.5rem 1rem;
+  font-family: inherit;
+  font-size: 1rem;
+  resize: none;
+  border: none;
+  border-radius: 5px;
+}
+.update-words button {
+  width: 100%;
+}
+
 .congratulations {
   text-align: center;
   display: grid;
