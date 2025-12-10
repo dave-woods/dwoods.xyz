@@ -1,19 +1,15 @@
 'use client'
 
+import styles from './projects.module.css'
+
 import Button from '@/components/Button'
 import Card from '@/components/Card'
 
 export default function Projects() {
   return (
-    <main>
+    <main className={styles.main}>
       <h1>Projects</h1>
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: '1fr 1fr 1fr 1fr',
-          gap: '1rem'
-        }}
-      >
+      <div className={styles['project-display']}>
         <Card>
           <Card.Title>Wordsearch</Card.Title>
           <Card.Content>
